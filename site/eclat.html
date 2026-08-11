@@ -38,7 +38,7 @@
     }
 
     * { box-sizing: border-box; }
-    html { background: var(--ink); scroll-behavior: smooth; }
+    html { background: var(--ink); overflow-x: clip; scroll-behavior: smooth; }
     body {
       background: var(--ink);
       color: var(--ivory);
@@ -59,6 +59,7 @@
     }
     body.menu-open { overflow: hidden; }
     main, .footer { position: relative; z-index: 1; }
+    main > section { min-height: 100svh; }
     a { color: inherit; text-decoration: none; }
     button, input, textarea { font: inherit; }
     button { color: inherit; }
@@ -378,8 +379,11 @@
     .manifesto {
       background: var(--ivory);
       color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       overflow: hidden;
-      padding: clamp(8rem, 15vw, 16rem) clamp(1.25rem, 6vw, 8rem);
+      padding: clamp(5rem, 10svh, 8rem) clamp(1.25rem, 6vw, 8rem);
       position: relative;
     }
     .manifesto::before { border: 1px solid rgba(4,17,15,.12); border-radius: 50%; content: ""; height: 54vw; position: absolute; right: -16vw; top: -18vw; width: 54vw; }
@@ -404,14 +408,14 @@
 
     .services {
       min-height: 100svh;
-      padding: clamp(8rem, 11vw, 12rem) clamp(1.25rem, 4vw, 5rem);
+      padding: clamp(6rem, 10svh, 7rem) clamp(1.25rem, 4vw, 5rem) clamp(3rem, 5svh, 4rem);
       position: relative;
     }
-    .services-intro { align-items: end; display: flex; justify-content: space-between; margin-bottom: 4rem; }
-    .services-intro h2 { font-family: var(--display); font-size: clamp(3.6rem, 7vw, 8rem); font-weight: 600; letter-spacing: -.085em; line-height: .84; margin: 0; rotate: var(--kinetic-rotate, 0deg); text-transform: uppercase; translate: var(--kinetic-x, 0px) 0; will-change: translate, rotate; }
+    .services-intro { align-items: end; display: flex; justify-content: space-between; margin-bottom: clamp(1.5rem, 2.5svh, 2.5rem); }
+    .services-intro h2 { font-family: var(--display); font-size: clamp(3.6rem, min(6vw, 8svh), 6rem); font-weight: 600; letter-spacing: -.085em; line-height: .84; margin: 0; rotate: var(--kinetic-rotate, 0deg); text-transform: uppercase; translate: var(--kinetic-x, 0px) 0; will-change: translate, rotate; }
     .services-intro p { color: var(--stone); font-size: .82rem; line-height: 1.7; margin: 0; max-width: 26rem; }
-    .service-theatre { border-top: 1px solid var(--line); display: grid; grid-template-columns: minmax(20rem, .82fr) minmax(30rem, 1.18fr); min-height: 39rem; }
-    .service-picker { align-self: center; display: grid; padding: 3rem 0; position: relative; z-index: 2; }
+    .service-theatre { border-top: 1px solid var(--line); display: grid; grid-template-columns: minmax(20rem, .82fr) minmax(30rem, 1.18fr); min-height: clamp(30rem, 54svh, 39rem); }
+    .service-picker { align-self: center; display: grid; padding: 2rem 0; position: relative; z-index: 2; }
     .service-choice {
       align-items: baseline;
       background: none;
@@ -420,7 +424,7 @@
       cursor: pointer;
       display: flex;
       font-family: var(--display);
-      font-size: clamp(2.1rem, 3.8vw, 4.8rem);
+      font-size: clamp(2.1rem, min(2.8vw, 5svh), 3.8rem);
       font-weight: 500;
       justify-content: space-between;
       letter-spacing: -.07em;
@@ -436,7 +440,7 @@
     .service-choice.active::after { opacity: 1; transform: translate(0,0); }
     .service-choice.active::before { transform: scaleX(1); }
     .service-choice.active { animation: service-choice-settle .68s cubic-bezier(.16,1,.3,1); }
-    .service-scene { clip-path: polygon(9% 0,100% 0,100% 100%,0 100%); display: grid; grid-template-rows: minmax(25rem, 1fr) auto; overflow: hidden; position: relative; }
+    .service-scene { clip-path: polygon(9% 0,100% 0,100% 100%,0 100%); display: grid; grid-template-rows: minmax(clamp(21rem, 36svh, 25rem), 1fr) auto; overflow: clip; position: relative; }
     .service-scene::before {
       background: radial-gradient(circle at var(--scene-position, 72%) 52%, rgba(234,216,173,.2), rgba(210,181,116,.06) 16%, transparent 38%);
       content: "";
@@ -464,7 +468,7 @@
       background-size: auto, 4rem 4rem, 4rem 4rem, auto;
       grid-row: 1;
       isolation: isolate;
-      min-height: 25rem;
+      min-height: clamp(21rem, 36svh, 25rem);
       overflow: hidden;
       position: relative;
       will-change: filter, opacity, transform;
@@ -535,6 +539,7 @@
       display: grid;
       gap: clamp(4rem, 10vw, 12rem);
       grid-template-columns: minmax(17rem, .55fr) minmax(0, 1.45fr);
+      min-height: 100svh;
       padding: clamp(8rem, 13vw, 14rem) clamp(1.25rem, 6vw, 8rem);
     }
     .method-head { align-self: start; position: sticky; top: 8rem; }
@@ -561,15 +566,18 @@
     .method-moment p { color: #496058; line-height: 1.8; margin: 0 0 0 auto; max-width: 30rem; }
 
     .contact {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       min-height: 100svh;
       overflow: hidden;
-      padding: clamp(8rem, 13vw, 14rem) clamp(1.25rem, 6vw, 8rem) 5rem;
+      padding: clamp(5rem, 8svh, 7rem) clamp(1.25rem, 6vw, 8rem) 5rem;
       position: relative;
     }
     .contact::before { background: radial-gradient(circle, rgba(210,181,116,.15), transparent 66%); content: ""; height: 70vw; left: -30vw; position: absolute; top: -20vw; width: 70vw; }
     .contact-lead { position: relative; }
     .contact-lead .eyebrow { color: var(--champagne-pale); font-size: .55rem; letter-spacing: .16em; text-transform: uppercase; }
-    .contact h2 { font-family: var(--display); font-size: clamp(3.9rem, 8.6vw, 10.4rem); font-weight: 600; letter-spacing: -.095em; line-height: .82; margin: 1.5rem 0 clamp(5rem, 10vw, 10rem); max-width: 10ch; rotate: var(--kinetic-rotate, 0deg); text-transform: uppercase; translate: var(--kinetic-x, 0px) 0; will-change: translate, rotate; }
+    .contact h2 { font-family: var(--display); font-size: clamp(3.9rem, min(8.6vw, 11svh), 9rem); font-weight: 600; letter-spacing: -.095em; line-height: .82; margin: 1.5rem 0 clamp(3.5rem, 7svh, 5rem); max-width: 10ch; rotate: var(--kinetic-rotate, 0deg); text-transform: uppercase; translate: var(--kinetic-x, 0px) 0; will-change: translate, rotate; }
     .contact h2 > span { display: block; }
     .contact h2 em { color: var(--champagne-pale); display: block; font-family: var(--accent); font-size: 1.14em; font-weight: 400; letter-spacing: -.035em; line-height: .98; overflow: visible; padding-bottom: .16em; text-transform: none; }
     .contact-grid { display: grid; gap: clamp(4rem, 10vw, 12rem); grid-template-columns: .65fr 1.35fr; position: relative; }
@@ -745,6 +753,20 @@
       .footer-meta { flex-direction: column; gap: 1rem; }
     }
 
+    /* Very small phones (<=380px): scale down long single-word display headings
+       so words like "COLOCAMOS" and "EXTRAORDINÁRIO" fit on one line without clipping. */
+    @media (max-width: 380px) {
+      .services-intro h2 { font-size: clamp(2.8rem, 13vw, 3.5rem); }
+      .method-moment h3 { font-size: clamp(2.2rem, 11vw, 3.2rem); }
+    }
+
+    @media (min-width: 820px) and (max-width: 980px) {
+      .service-theatre { grid-template-columns: minmax(18rem, .82fr) minmax(26rem, 1.18fr); }
+      .service-picker { grid-template-columns: 1fr; }
+      .service-choice { font-size: clamp(1.9rem, 3.5vw, 2.7rem); }
+      .service-scene { min-height: clamp(27rem, 52svh, 32rem); }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
@@ -810,7 +832,7 @@
       <header class="services-intro reveal"><h2>O que<br>colocamos<br>em cena.</h2><p>Selecione uma especialidade. Cada formato recebe uma linguagem própria, construída a partir da marca, da audiência e do momento.</p></header>
       <div class="service-theatre reveal">
         <div class="service-picker" role="list" aria-label="Serviços Éclat">
-          <button class="service-choice active" type="button" data-title="Conferências" data-tag="ONDE AS IDEIAS GANHAM ESCALA" data-copy="Palcos editoriais, conteúdos com ritmo e tecnologia invisível para encontros que fazem avançar ideias." data-position="72%">Conferências &amp; Summits</button>
+          <button class="service-choice active" type="button" data-title="Conferências" data-tag="ONDE AS IDEIAS GANHAM ESCALA" data-copy="Palcos, conteúdos e tecnologia pensados para criar encontros onde as ideias ganham movimento." data-position="72%">Conferências &amp; Summits</button>
           <button class="service-choice" type="button" data-title="Galas" data-tag="CELEBRAR O QUE PERMANECE" data-copy="Cerimónias com narrativa, elegância e uma atmosfera desenhada para permanecer na memória." data-position="58%">Galas &amp; Cerimónias</button>
           <button class="service-choice" type="button" data-title="Lançamentos" data-tag="O FUTURO APRESENTA-SE AQUI" data-copy="Experiências de marca que transformam produto, inovação e visão num momento de descoberta partilhado." data-position="82%">Lançamentos de Produto</button>
           <button class="service-choice" type="button" data-title="Prémios" data-tag="RECONHECER É INSPIRAR" data-copy="Awards com dramaturgia, fluidez e impacto visual à altura das pessoas e conquistas celebradas." data-position="66%">Prémios &amp; Awards</button>
@@ -819,7 +841,7 @@
         </div>
         <div class="service-scene" id="service-scene">
           <div class="service-visual" aria-hidden="true"><span class="service-core"></span><span class="service-beam beam-left"></span><span class="service-beam beam-right"></span></div>
-          <div class="service-detail" aria-live="polite"><span class="service-tag">ONDE AS IDEIAS GANHAM ESCALA</span><h3>Conferências</h3><p>Palcos editoriais, conteúdos com ritmo e tecnologia invisível para encontros que fazem avançar ideias.</p></div>
+          <div class="service-detail" aria-live="polite"><span class="service-tag">ONDE AS IDEIAS GANHAM ESCALA</span><h3>Conferências</h3><p>Palcos, conteúdos e tecnologia pensados para criar encontros onde as ideias ganham movimento.</p></div>
         </div>
       </div>
     </section>
