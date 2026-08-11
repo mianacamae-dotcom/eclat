@@ -1,0 +1,1110 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#04110f">
+  <meta name="description" content="Éclat cria experiências corporativas de alta qualidade em Portugal — estratégia, direção criativa e produção irrepreensível.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_PT">
+  <meta property="og:title" content="Éclat — A Arte dos Eventos Corporativos">
+  <meta property="og:description" content="Eventos que transformam ambição em presença.">
+  <meta property="og:image" content="__ORIGIN__/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Éclat — A Arte dos Eventos Corporativos">
+  <meta name="twitter:description" content="Eventos que transformam ambição em presença.">
+  <meta name="twitter:image" content="__ORIGIN__/og.png">
+  <title>Éclat — A Arte dos Eventos Corporativos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #04110f;
+      --ink-soft: #09201b;
+      --emerald: #0f352b;
+      --champagne: #d2b574;
+      --champagne-pale: #ead8ad;
+      --ivory: #f4efe6;
+      --stone: #b6b2a9;
+      --line: rgba(234,216,173,.24);
+      --line-dark: rgba(4,17,15,.2);
+      --display: "Syne", "Manrope", sans-serif;
+      --accent: "Instrument Serif", Georgia, serif;
+      --logo: "Bodoni Moda", Didot, Georgia, serif;
+      --body: "Manrope", Arial, sans-serif;
+      --px: 50vw;
+      --py: 50vh;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--ink); scroll-behavior: smooth; }
+    body {
+      background: var(--ink);
+      color: var(--ivory);
+      font-family: var(--body);
+      font-weight: 300;
+      margin: 0;
+      min-width: 320px;
+      overflow-x: hidden;
+    }
+    body::before {
+      background: radial-gradient(circle 18rem at var(--px) var(--py), rgba(234,216,173,.09), transparent 72%);
+      content: "";
+      inset: 0;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      position: fixed;
+      z-index: 98;
+    }
+    body.menu-open { overflow: hidden; }
+    main, .footer { position: relative; z-index: 1; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea { font: inherit; }
+    button { color: inherit; }
+    img { display: block; max-width: 100%; }
+    ::selection { background: var(--champagne); color: var(--ink); }
+    :focus-visible { outline: 1px solid var(--champagne-pale); outline-offset: 6px; }
+
+    .skip-link {
+      background: var(--ivory);
+      color: var(--ink);
+      left: 1rem;
+      padding: .8rem 1rem;
+      position: fixed;
+      top: -5rem;
+      z-index: 1000;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    .curtain {
+      align-items: center;
+      background: var(--ink);
+      display: flex;
+      inset: 0;
+      justify-content: center;
+      position: fixed;
+      transition: clip-path 1.15s cubic-bezier(.76,0,.24,1), visibility 1.2s;
+      z-index: 999;
+    }
+    .brand-logo-image {
+      display: block;
+      height: auto;
+      left: 50%;
+      max-width: none;
+      position: absolute;
+      top: 56%;
+      transform: translate(-50%, -50%);
+      width: 136%;
+      z-index: 1;
+    }
+    .curtain-brand,
+    .header-brand,
+    .footer-brand {
+      background: transparent;
+      clip-path: none;
+      display: grid;
+      isolation: isolate;
+      overflow: hidden;
+      place-items: center;
+      position: relative;
+    }
+    .curtain-brand::before,
+    .header-brand::before,
+    .footer-brand::before {
+      content: none;
+    }
+    .curtain-brand {
+      aspect-ratio: 1.45;
+      box-shadow: none;
+      width: clamp(18rem, 25vw, 23rem);
+    }
+    .is-ready .curtain { clip-path: inset(0 0 100% 0); visibility: hidden; }
+
+    .progress {
+      background: var(--champagne);
+      height: 2px;
+      left: 0;
+      position: fixed;
+      top: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      width: 100%;
+      z-index: 200;
+    }
+
+    .ambient-canvas {
+      height: 100%;
+      inset: 0;
+      mix-blend-mode: screen;
+      opacity: .48;
+      pointer-events: none;
+      position: fixed;
+      width: 100%;
+      z-index: 0;
+    }
+    .cursor-orbit {
+      align-items: center;
+      border: 1px solid rgba(234,216,173,.54);
+      border-radius: 50%;
+      display: flex;
+      height: 2.4rem;
+      justify-content: center;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      translate: calc(var(--cursor-x, -5rem) - 50%) calc(var(--cursor-y, -5rem) - 50%);
+      transition: height .4s cubic-bezier(.22,1,.36,1), width .4s cubic-bezier(.22,1,.36,1), border-color .3s ease, opacity .3s ease;
+      width: 2.4rem;
+      z-index: 250;
+    }
+    .cursor-orbit::after { background: var(--champagne-pale); border-radius: 50%; content: ""; height: 3px; width: 3px; }
+    .pointer-live .cursor-orbit { opacity: 1; }
+    .pointer-live .cursor-orbit.is-active { border-color: var(--champagne); height: 4.8rem; width: 4.8rem; }
+
+    .header {
+      align-items: center;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      height: 7rem;
+      left: 0;
+      padding: 0 clamp(1.25rem, 3.5vw, 4.5rem);
+      position: fixed;
+      right: 0;
+      top: 0;
+      transition: background .4s ease, height .4s ease;
+      z-index: 100;
+    }
+    .header.scrolled { backdrop-filter: blur(18px); background: rgba(4,17,15,.88); height: 5.4rem; }
+    .menu-open .header { color: var(--ink); }
+    .header-brand {
+      aspect-ratio: 1.45;
+      box-shadow: none;
+      justify-self: start;
+      transition: width .45s var(--ease-out), box-shadow .45s ease;
+      width: clamp(9.75rem, 9.5vw, 10.75rem);
+    }
+    .header.scrolled .header-brand { box-shadow: none; width: 8.35rem; }
+    .header-note { color: var(--stone); font-size: .55rem; justify-self: center; letter-spacing: .16em; text-transform: uppercase; }
+    .header-actions { align-items: center; display: flex; gap: 1.4rem; justify-self: end; }
+    .project-link { font-size: .62rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; }
+    .menu-button {
+      align-items: center;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      display: flex;
+      height: 3.25rem;
+      justify-content: center;
+      padding: 0;
+      position: relative;
+      width: 3.25rem;
+      z-index: 202;
+    }
+    .menu-button::before { border: 1px solid var(--line); border-radius: 50%; content: ""; inset: 0; position: absolute; transition: background .3s ease, transform .45s cubic-bezier(.22,1,.36,1); }
+    .menu-button:hover::before { background: var(--champagne); transform: scale(1.06); }
+    .menu-button span { background: currentColor; height: 1px; position: absolute; transition: top .35s ease, transform .35s ease, width .35s ease; width: 1.25rem; }
+    .menu-button span:first-child { top: 1.4rem; }
+    .menu-button span:last-child { top: 1.82rem; width: .8rem; }
+    .menu-button:hover span { color: var(--ink); }
+    .menu-open .menu-button span:first-child { top: 1.62rem; transform: rotate(45deg); }
+    .menu-open .menu-button span:last-child { top: 1.62rem; transform: rotate(-45deg); width: 1.25rem; }
+
+    .menu-layer {
+      background: #c8d0c9;
+      color: var(--ink);
+      display: grid;
+      grid-template-columns: 1fr .55fr;
+      inset: 0;
+      opacity: 0;
+      padding: 9rem clamp(1.25rem, 6vw, 8rem) 4rem;
+      pointer-events: none;
+      position: fixed;
+      transition: opacity .45s ease, visibility .45s;
+      visibility: hidden;
+      z-index: 99;
+    }
+    .menu-open .menu-layer { opacity: 1; pointer-events: auto; visibility: visible; }
+    .menu-nav { align-self: center; display: grid; }
+    .menu-nav a {
+      border-bottom: 1px solid var(--line-dark);
+      font-family: var(--display);
+      font-size: clamp(3.5rem, 8vw, 9rem);
+      font-weight: 600;
+      letter-spacing: -.075em;
+      line-height: .86;
+      padding: .08em 0;
+      text-transform: uppercase;
+      clip-path: inset(0 0 100% 0);
+      opacity: 0;
+      transform: translateY(.6em) skewY(2deg);
+      transition: padding-left .45s cubic-bezier(.22,1,.36,1), color .3s ease, clip-path .8s cubic-bezier(.22,1,.36,1), opacity .45s ease, transform .8s cubic-bezier(.22,1,.36,1);
+    }
+    .menu-open .menu-nav a { clip-path: inset(-.14em); opacity: 1; transform: translateY(0) skewY(0); }
+    .menu-open .menu-nav a:nth-child(1) { transition-delay: .08s; }
+    .menu-open .menu-nav a:nth-child(2) { transition-delay: .14s; }
+    .menu-open .menu-nav a:nth-child(3) { transition-delay: .2s; }
+    .menu-open .menu-nav a:nth-child(4) { transition-delay: .26s; }
+    .menu-nav a:hover { color: #6e5729; padding-left: .18em; }
+    .menu-aside { align-self: end; border-left: 1px solid var(--line-dark); margin-left: 4rem; padding-left: 2rem; }
+    .menu-aside p { font-family: var(--accent); font-size: 2.2rem; line-height: 1; margin: 0 0 2rem; max-width: 13ch; }
+    .menu-aside a { border-bottom: 1px solid currentColor; font-size: .65rem; letter-spacing: .12em; padding-bottom: .35rem; text-transform: uppercase; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(30rem, .9fr) minmax(34rem, 1.1fr);
+      min-height: 100svh;
+      overflow: hidden;
+      padding: 8.5rem clamp(1.25rem, 3.5vw, 4.5rem) 2.5rem;
+      position: relative;
+    }
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2rem 0 2.5rem;
+      position: relative;
+      z-index: 4;
+    }
+    .overline { color: var(--champagne-pale); font-size: .58rem; letter-spacing: .18em; text-transform: uppercase; }
+    .hero-title {
+      font-family: var(--display);
+      font-size: clamp(4.8rem, 7.2vw, 8.8rem);
+      font-weight: 600;
+      letter-spacing: -.095em;
+      line-height: .78;
+      margin: auto -4vw auto 0;
+      position: relative;
+      text-transform: uppercase;
+      translate: 0 var(--title-shift, 0px);
+      rotate: var(--title-tilt, 0deg);
+      width: max-content;
+      will-change: translate, rotate;
+      z-index: 4;
+    }
+    .hero-title span { display: block; }
+    .hero-title > span, .hero-title > em {
+      clip-path: inset(0 0 110% 0);
+      opacity: 0;
+      transform: translateY(1em) rotate(2deg);
+      transform-origin: left bottom;
+    }
+    .is-ready .hero-title.visible > span, .is-ready .hero-title.visible > em { animation: title-line-in 1.15s cubic-bezier(.16,1,.3,1) forwards; }
+    .is-ready .hero-title.visible > span:nth-child(2) { animation-delay: .1s; }
+    .is-ready .hero-title.visible > em { animation-delay: .2s; }
+    .hero-title em {
+      color: var(--champagne-pale);
+      display: block;
+      font-family: var(--accent);
+      font-size: 1.18em;
+      font-weight: 400;
+      letter-spacing: -.045em;
+      margin-left: .52em;
+      text-transform: none;
+    }
+    .hero-bottom { align-items: end; border-top: 1px solid var(--line); display: grid; gap: 2rem; grid-template-columns: minmax(13rem, 1fr) auto; padding-top: 1.4rem; }
+    .hero-bottom p { color: var(--stone); font-size: .86rem; line-height: 1.75; margin: 0; max-width: 28rem; }
+    .round-link { align-items: center; border: 1px solid var(--line); border-radius: 50%; display: flex; font-size: 1.2rem; height: 4.2rem; justify-content: center; transition: background .35s ease, color .35s ease, transform .45s cubic-bezier(.22,1,.36,1); width: 4.2rem; }
+    .round-link:hover { background: var(--champagne); color: var(--ink); transform: rotate(45deg); }
+    .hero-media {
+      background:
+        radial-gradient(circle at 66% 52%, rgba(210,181,116,.08), transparent 26%),
+        linear-gradient(rgba(210,181,116,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(210,181,116,.04) 1px, transparent 1px),
+        linear-gradient(135deg, #04110f, #08201b 58%, #04110f);
+      background-size: auto, 5rem 5rem, 5rem 5rem, auto;
+      clip-path: polygon(13% 0,100% 0,100% 100%,0 100%);
+      grid-column: 2;
+      inset: 0 0 0 auto;
+      margin: 0;
+      overflow: hidden;
+      position: absolute;
+      translate: 0 var(--media-shift, 0px);
+      width: 58%;
+      will-change: translate;
+    }
+    .is-ready .hero-media { animation: hero-mask-in 1.8s cubic-bezier(.16,1,.3,1) both; }
+    .hero-aperture {
+      aspect-ratio: 1;
+      background:
+        radial-gradient(circle, rgba(244,239,230,.9) 0 2px, rgba(210,181,116,.45) 3px, transparent 12px),
+        repeating-radial-gradient(circle, transparent 0 8.8%, rgba(210,181,116,.2) 9%, transparent 9.25%);
+      border: 1px solid rgba(210,181,116,.22);
+      border-radius: 50%;
+      left: 60%;
+      opacity: 0;
+      position: absolute;
+      scale: .72;
+      top: 49%;
+      translate: calc(-50% + var(--visual-x, 0%)) calc(-50% + var(--visual-y, 0%));
+      width: min(68vw, 66rem);
+      will-change: translate, scale, opacity, filter;
+    }
+    .hero-aperture::before {
+      background: conic-gradient(from 210deg, transparent 0 22%, rgba(234,216,173,.8) 25%, transparent 29% 58%, rgba(210,181,116,.42) 62%, transparent 66%);
+      border-radius: inherit;
+      content: "";
+      inset: 4%;
+      mask: radial-gradient(circle, transparent 67%, #000 67.3% 67.8%, transparent 68.1%);
+      position: absolute;
+      animation: aperture-turn 24s linear infinite;
+    }
+    .hero-aperture::after { background: radial-gradient(circle, rgba(244,239,230,.78), rgba(210,181,116,.22) 16%, transparent 68%); border-radius: 50%; content: ""; height: 15%; left: 42.5%; position: absolute; top: 42.5%; width: 15%; }
+    .hero-aperture span { border: 1px solid transparent; border-radius: 50%; inset: var(--ring-inset); position: absolute; }
+    .hero-aperture span:nth-child(1) { --ring-inset: 14%; border-left-color: rgba(234,216,173,.72); border-top-color: rgba(210,181,116,.28); animation: aperture-turn 18s linear infinite reverse; }
+    .hero-aperture span:nth-child(2) { --ring-inset: 29%; border-bottom-color: rgba(234,216,173,.56); border-right-color: rgba(210,181,116,.22); animation: aperture-turn 13s linear infinite; }
+    .hero-aperture span:nth-child(3) { --ring-inset: 41%; border-left-color: rgba(234,216,173,.48); border-top-color: rgba(210,181,116,.32); animation: aperture-turn 9s linear infinite reverse; }
+    .is-ready .hero-aperture { animation: aperture-in 2.2s .2s cubic-bezier(.16,1,.3,1) forwards; }
+    .hero-horizon { background: linear-gradient(90deg, transparent, rgba(234,216,173,.72), transparent); bottom: 15%; height: 1px; left: 14%; position: absolute; transform: scaleX(0); transform-origin: center; width: 80%; z-index: 1; }
+    .hero-horizon::after { border: 1px solid rgba(210,181,116,.28); border-radius: 50%; content: ""; height: 2rem; inset: -1rem 8% auto; position: absolute; }
+    .is-ready .hero-horizon { animation: horizon-in 1.5s 1s cubic-bezier(.16,1,.3,1) forwards; }
+    .hero-media::before {
+      background: linear-gradient(90deg, transparent, rgba(234,216,173,.72), transparent);
+      content: "";
+      inset: 0;
+      opacity: 0;
+      position: absolute;
+      transform: translateX(-110%) skewX(-12deg);
+      width: 42%;
+      z-index: 2;
+    }
+    .is-ready .hero-media::before { animation: hero-scan 1.8s .55s cubic-bezier(.22,1,.36,1) both; }
+    .hero-media::after { background: linear-gradient(90deg, rgba(4,17,15,.74), transparent 36%), linear-gradient(0deg, rgba(4,17,15,.38), transparent 28%); content: ""; inset: 0; pointer-events: none; position: absolute; }
+    .hero-caption { bottom: 2.2rem; display: flex; font-size: .53rem; justify-content: space-between; left: 15%; letter-spacing: .16em; position: absolute; right: 2.5rem; text-transform: uppercase; z-index: 2; }
+    .hero-side { bottom: 3rem; color: var(--stone); font-size: .5rem; left: 1rem; letter-spacing: .16em; position: absolute; text-transform: uppercase; writing-mode: vertical-rl; }
+
+    .manifesto {
+      background: var(--ivory);
+      color: var(--ink);
+      overflow: hidden;
+      padding: clamp(8rem, 15vw, 16rem) clamp(1.25rem, 6vw, 8rem);
+      position: relative;
+    }
+    .manifesto::before { border: 1px solid rgba(4,17,15,.12); border-radius: 50%; content: ""; height: 54vw; position: absolute; right: -16vw; top: -18vw; width: 54vw; }
+    .manifesto-line { color: #6b654f; font-size: .57rem; letter-spacing: .16em; margin-bottom: 3rem; text-transform: uppercase; }
+    .manifesto h2 {
+      font-family: var(--display);
+      font-size: clamp(3.7rem, 8.4vw, 10.2rem);
+      font-weight: 600;
+      letter-spacing: -.085em;
+      line-height: .82;
+      margin: 0;
+      max-width: 10.5ch;
+      position: relative;
+      translate: var(--kinetic-x, 0px) 0;
+      rotate: var(--kinetic-rotate, 0deg);
+      will-change: translate, rotate;
+    }
+    .manifesto h2 em { color: #8c713a; font-family: var(--accent); font-size: 1.16em; font-weight: 400; letter-spacing: -.035em; }
+    .manifesto-foot { align-items: start; display: grid; gap: 4rem; grid-template-columns: 1fr minmax(17rem, .42fr); margin-top: clamp(4rem, 9vw, 9rem); }
+    .manifesto-rule { background: var(--ink); height: 1px; margin-top: .7rem; width: 100%; }
+    .manifesto-foot p { color: #4f5b56; font-size: .93rem; line-height: 1.8; margin: 0; }
+
+    .services {
+      min-height: 100svh;
+      padding: clamp(8rem, 11vw, 12rem) clamp(1.25rem, 4vw, 5rem);
+      position: relative;
+    }
+    .services-intro { align-items: end; display: flex; justify-content: space-between; margin-bottom: 4rem; }
+    .services-intro h2 { font-family: var(--display); font-size: clamp(3.6rem, 7vw, 8rem); font-weight: 600; letter-spacing: -.085em; line-height: .84; margin: 0; rotate: var(--kinetic-rotate, 0deg); text-transform: uppercase; translate: var(--kinetic-x, 0px) 0; will-change: translate, rotate; }
+    .services-intro p { color: var(--stone); font-size: .82rem; line-height: 1.7; margin: 0; max-width: 26rem; }
+    .service-theatre { border-top: 1px solid var(--line); display: grid; grid-template-columns: minmax(20rem, .82fr) minmax(30rem, 1.18fr); min-height: 39rem; }
+    .service-picker { align-self: center; display: grid; padding: 3rem 0; position: relative; z-index: 2; }
+    .service-choice {
+      align-items: baseline;
+      background: none;
+      border: 0;
+      color: #75847d;
+      cursor: pointer;
+      display: flex;
+      font-family: var(--display);
+      font-size: clamp(2.1rem, 3.8vw, 4.8rem);
+      font-weight: 500;
+      justify-content: space-between;
+      letter-spacing: -.07em;
+      line-height: 1;
+      padding: .22em 1.5rem .22em 0;
+      position: relative;
+      text-align: left;
+      transition: color .35s ease, transform .45s cubic-bezier(.22,1,.36,1);
+    }
+    .service-choice::before { background: linear-gradient(90deg, var(--champagne), transparent); bottom: .08em; content: ""; height: 1px; left: 0; position: absolute; transform: scaleX(0); transform-origin: left; transition: transform .7s cubic-bezier(.22,1,.36,1); width: 75%; }
+    .service-choice::after { content: "↗"; font-family: var(--body); font-size: .9rem; opacity: 0; transform: translate(-.5rem,.5rem); transition: opacity .3s ease, transform .3s ease; }
+    .service-choice:hover, .service-choice.active { color: var(--ivory); transform: translateX(1rem); }
+    .service-choice.active::after { opacity: 1; transform: translate(0,0); }
+    .service-choice.active::before { transform: scaleX(1); }
+    .service-choice.active { animation: service-choice-settle .68s cubic-bezier(.16,1,.3,1); }
+    .service-scene { clip-path: polygon(9% 0,100% 0,100% 100%,0 100%); display: grid; grid-template-rows: minmax(25rem, 1fr) auto; overflow: hidden; position: relative; }
+    .service-scene::before {
+      background: radial-gradient(circle at var(--scene-position, 72%) 52%, rgba(234,216,173,.2), rgba(210,181,116,.06) 16%, transparent 38%);
+      content: "";
+      inset: 0;
+      mix-blend-mode: screen;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      transform: scale(.72);
+      z-index: 1;
+    }
+    .service-scene.is-changing { animation: scene-frame-pulse 1.05s cubic-bezier(.22,1,.36,1); }
+    .service-scene.is-changing::before { animation: scene-light-echo 1.05s cubic-bezier(.22,1,.36,1); }
+    .service-scene.is-changing .service-visual { animation: scene-visual-shift 1.05s cubic-bezier(.22,1,.36,1); }
+    .service-scene.is-changing .service-visual::before { animation: scene-orbit-bloom 1.05s cubic-bezier(.22,1,.36,1); }
+    .service-scene.is-changing .service-visual::after { animation: scene-light-slice .88s cubic-bezier(.22,1,.36,1); }
+    .service-scene.is-changing .service-core { animation: scene-core-pulse 1.05s cubic-bezier(.22,1,.36,1); }
+    .service-scene.is-changing .service-beam { animation: scene-beam-pulse 1.05s cubic-bezier(.22,1,.36,1); }
+    .service-visual {
+      background:
+        radial-gradient(circle at var(--scene-position, 72%) 56%, rgba(210,181,116,.13), transparent 13rem),
+        linear-gradient(rgba(210,181,116,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(210,181,116,.045) 1px, transparent 1px),
+        linear-gradient(145deg, #061510, #0a271f 58%, #04110f);
+      background-size: auto, 4rem 4rem, 4rem 4rem, auto;
+      grid-row: 1;
+      isolation: isolate;
+      min-height: 25rem;
+      overflow: hidden;
+      position: relative;
+      will-change: filter, opacity, transform;
+    }
+    .service-visual::before {
+      aspect-ratio: 1;
+      background: conic-gradient(from 210deg, transparent 0 12%, rgba(234,216,173,.72) 16%, transparent 21% 57%, rgba(210,181,116,.44) 62%, transparent 68%);
+      border-radius: 50%;
+      content: "";
+      left: var(--scene-position, 72%);
+      mask: radial-gradient(circle, transparent 0 66%, #000 66.5% 67.2%, transparent 67.8%);
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      top: 52%;
+      transform: translate(-50%,-50%) scale(.58) rotate(-24deg);
+      width: clamp(22rem, 44vw, 38rem);
+      z-index: 2;
+    }
+    .service-visual::after {
+      background: linear-gradient(90deg, transparent, rgba(234,216,173,.18) 24%, rgba(244,239,230,.92) 50%, rgba(210,181,116,.2) 76%, transparent);
+      content: "";
+      height: 1px;
+      left: 6%;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      top: 52%;
+      transform: translateX(calc(var(--scene-drift, 0px) * -.5)) rotate(var(--scene-tilt, 0deg)) scaleX(.08);
+      width: 88%;
+      z-index: 3;
+    }
+    .service-core {
+      aspect-ratio: 1;
+      background: repeating-radial-gradient(circle, transparent 0 10%, rgba(210,181,116,.23) 10.25%, transparent 10.55%);
+      border: 1px solid rgba(234,216,173,.34);
+      border-radius: 50%;
+      left: var(--scene-position, 72%);
+      position: absolute;
+      top: 52%;
+      transform: translate(-50%,-50%);
+      transition: left .92s cubic-bezier(.16,1,.3,1), scale 1s ease;
+      width: clamp(22rem, 44vw, 38rem);
+      will-change: filter, left, transform;
+    }
+    .service-core::before { background: conic-gradient(from 220deg, transparent, rgba(234,216,173,.7), transparent 18% 62%, rgba(210,181,116,.4), transparent 76%); border-radius: inherit; content: ""; inset: 12%; mask: radial-gradient(circle, transparent 66%, #000 66.5% 67.3%, transparent 68%); position: absolute; animation: aperture-turn 20s linear infinite; }
+    .service-core::after { background: radial-gradient(circle, rgba(244,239,230,.76), rgba(210,181,116,.26) 14%, transparent 64%); border-radius: 50%; content: ""; height: 22%; left: 39%; position: absolute; top: 39%; width: 22%; }
+    .service-beam { background: linear-gradient(0deg, rgba(234,216,173,.5), transparent); bottom: 0; height: 58%; left: var(--scene-position, 72%); position: absolute; transform-origin: bottom; transition: left 1.1s cubic-bezier(.22,1,.36,1); width: 1px; }
+    .beam-left { rotate: -18deg; }
+    .beam-right { rotate: 18deg; }
+    .service-scene::after { display: none; }
+    .service-detail { background: var(--ink-soft); grid-row: 2; overflow: hidden; padding: 2rem 2.5rem 2.4rem 11%; position: relative; transition: opacity .26s ease, transform .38s cubic-bezier(.22,1,.36,1); z-index: 2; }
+    .service-tag { color: var(--champagne-pale); font-size: .55rem; letter-spacing: .15em; text-transform: uppercase; }
+    .service-detail h3 { font-family: var(--display); font-size: clamp(2.5rem, 4vw, 4.6rem); font-weight: 600; letter-spacing: -.075em; line-height: .88; margin: .5rem 0 1rem; text-transform: uppercase; }
+    .service-detail p { color: var(--stone); font-size: .82rem; line-height: 1.7; margin: 0; max-width: 33rem; }
+    .service-detail.outgoing { opacity: .2; transform: translateY(-.45rem); }
+    .service-detail.swap .service-tag { animation: service-line-in .55s .02s cubic-bezier(.16,1,.3,1) both; }
+    .service-detail.swap h3 { animation: service-line-in .7s .08s cubic-bezier(.16,1,.3,1) both; }
+    .service-detail.swap p { animation: service-line-in .72s .16s cubic-bezier(.16,1,.3,1) both; }
+    @keyframes service-line-in {
+      from { clip-path: inset(0 0 100% 0); filter: blur(4px); opacity: 0; transform: translateY(1.2rem) skewY(1.2deg); }
+      to { clip-path: inset(-.15em); filter: blur(0); opacity: 1; transform: translateY(0) skewY(0); }
+    }
+
+    .method {
+      background: #ecece7;
+      color: var(--ink);
+      display: grid;
+      gap: clamp(4rem, 10vw, 12rem);
+      grid-template-columns: minmax(17rem, .55fr) minmax(0, 1.45fr);
+      padding: clamp(8rem, 13vw, 14rem) clamp(1.25rem, 6vw, 8rem);
+    }
+    .method-head { align-self: start; position: sticky; top: 8rem; }
+    .method-head .eyebrow { color: #806832; font-size: .56rem; letter-spacing: .16em; text-transform: uppercase; }
+    .method-head h2 { font-family: var(--display); font-size: clamp(3.7rem, 5.7vw, 6.7rem); font-weight: 600; letter-spacing: -.085em; line-height: .84; margin: 1.25rem 0 2.5rem; text-transform: uppercase; }
+    .method-head p { color: #4f5b56; font-size: .85rem; line-height: 1.75; margin: 0; max-width: 24rem; }
+    .method-flow { border-top: 1px solid var(--line-dark); position: relative; }
+    .method-flow::before {
+      background: linear-gradient(180deg, transparent 0, var(--line-dark) 7%, var(--line-dark) 93%, transparent 100%);
+      bottom: 0;
+      content: "";
+      left: 0;
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      transform: translateX(-1.5rem);
+      width: 1px;
+    }
+    .method-moment { border-bottom: 1px solid var(--line-dark); opacity: var(--moment-opacity, 1); padding: clamp(3rem, 7vw, 7rem) 0; position: relative; transform: translateX(var(--moment-shift, 0px)) scale(var(--moment-scale, 1)); transform-origin: left center; transition: color .35s ease; will-change: transform, opacity; }
+    .method-moment::after { background: linear-gradient(90deg, var(--emerald), transparent); bottom: -1px; content: ""; height: 2px; left: 0; position: absolute; transform: scaleX(var(--moment-line, 0)); transform-origin: left; width: 100%; }
+    .method-moment .phase { color: #806832; font-size: .56rem; letter-spacing: .16em; text-transform: uppercase; }
+    .method-moment h3 { color: var(--emerald); font-family: var(--display); font-size: clamp(3rem, 6vw, 7rem); font-weight: 600; letter-spacing: -.085em; line-height: .84; margin: 1rem 0 2rem; overflow-wrap: anywhere; text-transform: uppercase; transition: color .5s ease, transform .7s cubic-bezier(.22,1,.36,1); }
+    .method-moment.is-active h3 { color: var(--emerald); }
+    .method-moment p { color: #496058; line-height: 1.8; margin: 0 0 0 auto; max-width: 30rem; }
+
+    .contact {
+      min-height: 100svh;
+      overflow: hidden;
+      padding: clamp(8rem, 13vw, 14rem) clamp(1.25rem, 6vw, 8rem) 5rem;
+      position: relative;
+    }
+    .contact::before { background: radial-gradient(circle, rgba(210,181,116,.15), transparent 66%); content: ""; height: 70vw; left: -30vw; position: absolute; top: -20vw; width: 70vw; }
+    .contact-lead { position: relative; }
+    .contact-lead .eyebrow { color: var(--champagne-pale); font-size: .55rem; letter-spacing: .16em; text-transform: uppercase; }
+    .contact h2 { font-family: var(--display); font-size: clamp(3.9rem, 8.6vw, 10.4rem); font-weight: 600; letter-spacing: -.095em; line-height: .82; margin: 1.5rem 0 clamp(5rem, 10vw, 10rem); max-width: 10ch; rotate: var(--kinetic-rotate, 0deg); text-transform: uppercase; translate: var(--kinetic-x, 0px) 0; will-change: translate, rotate; }
+    .contact h2 > span { display: block; }
+    .contact h2 em { color: var(--champagne-pale); display: block; font-family: var(--accent); font-size: 1.14em; font-weight: 400; letter-spacing: -.035em; line-height: .98; overflow: visible; padding-bottom: .16em; text-transform: none; }
+    .contact-grid { display: grid; gap: clamp(4rem, 10vw, 12rem); grid-template-columns: .65fr 1.35fr; position: relative; }
+    .contact-note { align-self: end; color: var(--stone); font-size: .84rem; line-height: 1.8; max-width: 23rem; }
+    .contact-form { display: grid; gap: 2rem; grid-template-columns: 1fr 1fr; }
+    .field { border-bottom: 1px solid var(--line); padding-bottom: .75rem; }
+    .field-wide { grid-column: 1 / -1; }
+    .field label { color: #798981; display: block; font-size: .53rem; letter-spacing: .14em; margin-bottom: .7rem; text-transform: uppercase; }
+    .field input, .field textarea { background: transparent; border: 0; color: var(--ivory); outline: none; padding: .3rem 0; resize: vertical; width: 100%; }
+    .field:focus-within { border-bottom-color: var(--champagne); }
+    .field textarea { min-height: 5rem; }
+    .submit {
+      align-items: center;
+      background: var(--champagne);
+      border: 0;
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      font-size: .62rem;
+      font-weight: 600;
+      grid-column: 1 / -1;
+      justify-content: space-between;
+      letter-spacing: .13em;
+      min-height: 4.2rem;
+      padding: 0 1.5rem;
+      text-transform: uppercase;
+      transition: background .3s ease, padding .4s cubic-bezier(.22,1,.36,1);
+    }
+    .submit:hover { background: var(--champagne-pale); padding-left: 2rem; }
+
+    .footer { border-top: 1px solid var(--line); padding: 3rem clamp(1.25rem, 3.5vw, 4.5rem); }
+    .footer-main { align-items: end; display: flex; justify-content: space-between; }
+    .footer-brand {
+      aspect-ratio: 1.45;
+      box-shadow: none;
+      width: clamp(18rem, 22vw, 21rem);
+    }
+    .footer-links { display: flex; font-size: .57rem; gap: 1.5rem; letter-spacing: .13em; text-transform: uppercase; }
+    .footer-meta { color: #708078; display: flex; font-size: .53rem; justify-content: space-between; letter-spacing: .1em; margin-top: 4rem; text-transform: uppercase; }
+
+    .reveal { clip-path: inset(0 0 16% 0); filter: blur(8px); opacity: 0; transform: translateY(4rem) skewY(1.4deg); transform-origin: left bottom; transition: clip-path 1.15s cubic-bezier(.16,1,.3,1), filter .9s ease, opacity .75s ease, transform 1.15s cubic-bezier(.16,1,.3,1); }
+    .reveal.visible { clip-path: inset(-.16em); filter: blur(0); opacity: 1; transform: translateY(0) skewY(0); }
+    .method-head.reveal { clip-path: none; overflow: visible; }
+    .method-moment.reveal { clip-path: none; filter: none; opacity: var(--moment-opacity, 1); transform: translateX(var(--moment-shift, 0px)) scale(var(--moment-scale, 1)); }
+
+    @keyframes title-line-in {
+      from { clip-path: inset(0 0 110% 0); opacity: 0; transform: translateY(1em) rotate(2deg); }
+      to { clip-path: inset(-.16em); opacity: 1; transform: translateY(0) rotate(0); }
+    }
+    @keyframes hero-mask-in {
+      from { clip-path: polygon(100% 0,100% 0,100% 100%,100% 100%); }
+      to { clip-path: polygon(13% 0,100% 0,100% 100%,0 100%); }
+    }
+    @keyframes aperture-in {
+      from { filter: blur(14px); opacity: 0; scale: .72; }
+      to { filter: blur(0); opacity: .76; scale: 1; }
+    }
+    @keyframes aperture-turn { to { transform: rotate(360deg); } }
+    @keyframes horizon-in { to { transform: scaleX(1); } }
+    @keyframes hero-scan {
+      0% { opacity: 0; transform: translateX(-120%) skewX(-12deg); }
+      25% { opacity: .7; }
+      100% { opacity: 0; transform: translateX(360%) skewX(-12deg); }
+    }
+    @keyframes scene-light-echo {
+      0% { opacity: 0; transform: scale(.72); }
+      30% { opacity: 1; transform: scale(.96); }
+      100% { opacity: 0; transform: scale(1.42); }
+    }
+    @keyframes scene-visual-shift {
+      0% { filter: blur(0); opacity: 1; transform: scale(1); }
+      34% { filter: blur(1.5px) brightness(1.22); opacity: .72; transform: translateX(var(--scene-drift, 0px)) scale(1.022) rotate(var(--scene-tilt, 0deg)); }
+      100% { filter: blur(0); opacity: 1; transform: scale(1); }
+    }
+    @keyframes scene-orbit-bloom {
+      0% { opacity: 0; transform: translate(-50%,-50%) scale(.52) rotate(-24deg); }
+      28% { opacity: .95; }
+      72% { opacity: .5; }
+      100% { opacity: 0; transform: translate(-50%,-50%) scale(1.18) rotate(116deg); }
+    }
+    @keyframes scene-light-slice {
+      0% { opacity: 0; transform: translateX(calc(var(--scene-drift, 0px) * -1)) rotate(var(--scene-tilt, 0deg)) scaleX(.08); }
+      34% { opacity: 1; }
+      100% { opacity: 0; transform: translateX(var(--scene-drift, 0px)) rotate(var(--scene-tilt, 0deg)) scaleX(1); }
+    }
+    @keyframes scene-core-pulse {
+      0% { filter: brightness(1); transform: translate(-50%,-50%) scale(1); }
+      34% { filter: brightness(1.55); transform: translate(-50%,-50%) scale(.92) rotate(-2deg); }
+      68% { filter: brightness(1.18); transform: translate(-50%,-50%) scale(1.045) rotate(1deg); }
+      100% { filter: brightness(1); transform: translate(-50%,-50%) scale(1); }
+    }
+    @keyframes scene-beam-pulse {
+      0% { filter: brightness(1); opacity: .72; }
+      32% { filter: brightness(1.9); opacity: 1; }
+      100% { filter: brightness(1); opacity: .72; }
+    }
+    @keyframes scene-frame-pulse {
+      0% { box-shadow: inset 0 0 0 rgba(234,216,173,0); }
+      34% { box-shadow: inset 0 0 0 1px rgba(234,216,173,.2), inset 0 0 5rem rgba(210,181,116,.055); }
+      100% { box-shadow: inset 0 0 0 rgba(234,216,173,0); }
+    }
+    @keyframes service-choice-settle {
+      0% { letter-spacing: -.085em; transform: translateX(.35rem); }
+      55% { letter-spacing: -.065em; transform: translateX(1.18rem); }
+      100% { letter-spacing: -.07em; transform: translateX(1rem); }
+    }
+
+    @media (max-width: 1280px) {
+      .method { gap: clamp(5rem, 9vw, 8rem); grid-template-columns: minmax(0, 1fr); }
+      .method-head { max-width: 52rem; position: relative; top: auto; }
+      .method-head h2 { max-width: 10ch; }
+      .method-flow { min-width: 0; }
+      .method-flow::before { display: none; }
+    }
+
+    @media (max-width: 980px) {
+      .header-note { display: none; }
+      .header { grid-template-columns: 1fr auto; }
+      .hero { grid-template-columns: 1fr; padding-right: 1.25rem; }
+      .hero-copy { min-height: calc(100svh - 11rem); width: 58%; }
+      .hero-media { width: 61%; }
+      .hero-title { font-size: clamp(4.6rem, 8.2vw, 6.6rem); }
+      .manifesto-foot { grid-template-columns: .55fr 1fr; }
+      .service-theatre { grid-template-columns: 1fr; }
+      .service-picker { grid-template-columns: 1fr 1fr; }
+      .service-choice { font-size: clamp(2rem, 5vw, 3.5rem); }
+      .service-scene { min-height: 36rem; }
+      .method { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    @media (max-width: 680px) {
+      .header { height: 5.7rem; padding: 0 1rem; }
+      .header.scrolled { height: 4.8rem; }
+      .header-brand { width: 8.2rem; }
+      .header.scrolled .header-brand { width: 7rem; }
+      .project-link { display: none; }
+      .menu-layer { display: block; padding: 8rem 1.25rem 3rem; }
+      .menu-nav a { font-size: clamp(2.9rem, 15vw, 4.8rem); }
+      .menu-aside { border-left: 0; border-top: 1px solid var(--line-dark); margin: 3rem 0 0; padding: 2rem 0 0; }
+      .menu-aside p { font-size: 1.5rem; }
+      .hero { display: flex; flex-direction: column; min-height: auto; padding: 6.6rem 1rem 1rem; }
+      .hero-copy { min-height: 42rem; padding: 1.5rem .25rem 2.2rem; width: 100%; }
+      .hero-title { font-size: clamp(2rem, 10vw, 4.2rem); margin-right: 0; }
+      .hero-title em { margin-left: .2em; }
+      .hero-media { clip-path: none; height: 54svh; min-height: 24rem; position: relative; width: 100%; }
+      .hero-aperture { left: 64%; width: 115%; }
+      .hero-bottom { grid-template-columns: 1fr auto; }
+      .hero-side { display: none; }
+      .manifesto { padding: 8rem 1.25rem; }
+      .manifesto h2 { font-size: clamp(3.5rem, 14vw, 5.4rem); }
+      .manifesto-foot { display: block; }
+      .manifesto-rule { margin-bottom: 2.5rem; }
+      .services { padding: 8rem 1.25rem; }
+      .services-intro { align-items: start; display: block; }
+      .services-intro h2 { font-size: clamp(3.5rem, 14vw, 5.4rem); margin-bottom: 2.5rem; }
+      .service-picker { display: block; padding: 2rem 0; }
+      .service-choice { font-size: clamp(2rem, 9vw, 3rem); width: 100%; }
+      .service-scene { clip-path: none; min-height: 32rem; }
+      .service-core { width: min(31rem, 110vw); }
+      .service-detail { padding: 1.75rem 1.5rem 2rem; }
+      .method { padding: 8rem 1.25rem; }
+      .method-head h2 { font-size: clamp(3.4rem, 14vw, 5.2rem); }
+      .method-moment h3 { font-size: clamp(3.2rem, 13vw, 5rem); }
+      .contact { padding: 8rem 1.25rem 4rem; }
+      .contact h2 { font-size: clamp(2.5rem, 12vw, 4.8rem); }
+      .contact-grid { display: block; }
+      .contact-note { margin-bottom: 4rem; }
+      .contact-form { display: block; }
+      .field { margin-bottom: 2rem; }
+      .submit { margin-top: 2.5rem; width: 100%; }
+      .footer-main { align-items: start; flex-direction: column; gap: 3rem; }
+      .footer-links { flex-wrap: wrap; }
+      .footer-meta { flex-direction: column; gap: 1rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+      body::before { display: none; }
+      .ambient-canvas, .cursor-orbit { display: none; }
+      .reveal { opacity: 1; transform: none; }
+      .hero-title > span, .hero-title > em { clip-path: inset(0); opacity: 1; transform: none; }
+      .method-moment.reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+  <div class="curtain" aria-hidden="true"><div class="curtain-brand"><img class="brand-logo-image" src="eclat-logo-champagne-pearl.png" width="1254" height="1254" alt=""></div></div>
+  <div class="progress" aria-hidden="true"></div>
+  <canvas class="ambient-canvas" aria-hidden="true"></canvas>
+  <div class="cursor-orbit" aria-hidden="true"></div>
+
+  <header class="header">
+    <a class="header-brand" href="#inicio" aria-label="Éclat — início"><img class="brand-logo-image" src="eclat-logo-champagne-pearl-no-tagline.png" width="1254" height="1254" alt="Éclat"></a>
+    <div class="header-note">Experiências corporativas · Portugal</div>
+    <div class="header-actions">
+      <a class="project-link" href="#contactos">Começar um projeto</a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <aside class="menu-layer" id="menu" aria-hidden="true">
+    <nav class="menu-nav" aria-label="Navegação principal">
+      <a href="#sobre">Sobre</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#metodo">Método</a>
+      <a href="#contactos">Contacto</a>
+    </nav>
+    <div class="menu-aside"><p>A arte de transformar visão em presença.</p><a href="mailto:ola.eclat@gmail.com">ola.eclat@gmail.com</a></div>
+  </aside>
+
+  <main id="conteudo">
+    <section class="hero" id="inicio">
+      <div class="hero-copy">
+        <div class="overline reveal">Corporate experiences · Portugal &amp; beyond</div>
+        <h1 class="hero-title reveal"><span>O</span><span>Extraordinário,</span><em>em cena</em></h1>
+        <div class="hero-bottom reveal">
+          <p>Concebemos e produzimos eventos corporativos que transformam objetivos de negócio em experiências que permanecem.</p>
+          <a class="round-link" href="#contactos" aria-label="Começar um projeto">↗</a>
+        </div>
+      </div>
+      <figure class="hero-media">
+        <div class="hero-aperture" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="hero-horizon" aria-hidden="true"></div>
+        <figcaption class="hero-caption"><span>Direção criativa · Produção · Tecnologia</span><span>Lisboa / Worldwide</span></figcaption>
+      </figure>
+      <div class="hero-side" aria-hidden="true">A Arte dos Eventos Corporativos</div>
+    </section>
+
+    <section class="manifesto" id="sobre">
+      <div class="manifesto-line reveal">Éclat significa brilho, esplendor, uma explosão de luz</div>
+      <h2 class="reveal">A visão encontra a sua forma mais <em>memorável.</em></h2>
+      <div class="manifesto-foot reveal"><div class="manifesto-rule"></div><p>Estratégia, narrativa, espaço, tecnologia e hospitalidade trabalham como um só gesto. O resultado não parece produzido. Parece inevitável.</p></div>
+    </section>
+
+    <section class="services" id="servicos">
+      <header class="services-intro reveal"><h2>O que<br>colocamos<br>em cena.</h2><p>Selecione uma especialidade. Cada formato recebe uma linguagem própria, construída a partir da marca, da audiência e do momento.</p></header>
+      <div class="service-theatre reveal">
+        <div class="service-picker" role="list" aria-label="Serviços Éclat">
+          <button class="service-choice active" type="button" data-title="Conferências" data-tag="ONDE AS IDEIAS GANHAM ESCALA" data-copy="Palcos editoriais, conteúdos com ritmo e tecnologia invisível para encontros que fazem avançar ideias." data-position="72%">Conferências &amp; Summits</button>
+          <button class="service-choice" type="button" data-title="Galas" data-tag="CELEBRAR O QUE PERMANECE" data-copy="Cerimónias com narrativa, elegância e uma atmosfera desenhada para permanecer na memória." data-position="58%">Galas &amp; Cerimónias</button>
+          <button class="service-choice" type="button" data-title="Lançamentos" data-tag="O FUTURO APRESENTA-SE AQUI" data-copy="Experiências de marca que transformam produto, inovação e visão num momento de descoberta partilhado." data-position="82%">Lançamentos de Produto</button>
+          <button class="service-choice" type="button" data-title="Prémios" data-tag="RECONHECER É INSPIRAR" data-copy="Awards com dramaturgia, fluidez e impacto visual à altura das pessoas e conquistas celebradas." data-position="66%">Prémios &amp; Awards</button>
+          <button class="service-choice" type="button" data-title="Team Building" data-tag="AS MELHORES EQUIPAS CONSTROEM-SE JUNTAS" data-copy="Dinâmicas com propósito que criam ligação real, energia coletiva e novas formas de colaboração." data-position="48%">Team Building</button>
+          <button class="service-choice" type="button" data-title="Retreats" data-tag="VER ALÉM DO IMEDIATO" data-copy="Imersões corporativas cuidadosamente curadas, onde estratégia, bem-estar e hospitalidade encontram espaço." data-position="88%">Corporate Retreats</button>
+        </div>
+        <div class="service-scene" id="service-scene">
+          <div class="service-visual" aria-hidden="true"><span class="service-core"></span><span class="service-beam beam-left"></span><span class="service-beam beam-right"></span></div>
+          <div class="service-detail" aria-live="polite"><span class="service-tag">ONDE AS IDEIAS GANHAM ESCALA</span><h3>Conferências</h3><p>Palcos editoriais, conteúdos com ritmo e tecnologia invisível para encontros que fazem avançar ideias.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="method" id="metodo">
+      <header class="method-head reveal"><span class="eyebrow">Como trabalhamos</span><h2>Da intenção ao aplauso.</h2><p>Um processo próximo, claro e rigoroso. Sem fórmulas. Sem soluções recicladas.</p></header>
+      <div class="method-flow">
+        <article class="method-moment reveal"><span class="phase">Imersão</span><h3>Escutar o que ainda não foi dito.</h3><p>Mergulhamos na marca, na audiência e no contexto para descobrir a tensão criativa capaz de sustentar toda a experiência.</p></article>
+        <article class="method-moment reveal"><span class="phase">Direção criativa</span><h3>Dar forma a uma ideia impossível de confundir.</h3><p>Construímos narrativa, identidade, espaço, conteúdos e ritmo como partes inseparáveis do mesmo conceito.</p></article>
+        <article class="method-moment reveal"><span class="phase">Produção</span><h3>Fazer o extraordinário parecer simples.</h3><p>Orquestramos equipas, fornecedores, tecnologia, hospitalidade e detalhe para que tudo aconteça como previsto.</p></article>
+      </div>
+    </section>
+
+    <section class="contact" id="contactos">
+      <div class="contact-lead reveal"><span class="eyebrow">O próximo momento começa aqui</span><h2><span>Conte-nos</span> <em>o inimaginável</em></h2></div>
+      <div class="contact-grid">
+        <p class="contact-note reveal">Partilhe a sua ambição, mesmo que ainda não tenha forma. É precisamente aí que começamos.</p>
+        <form class="contact-form reveal" id="contact-form">
+          <div class="field"><label for="nome">Nome</label><input id="nome" name="nome" autocomplete="name" required></div>
+          <div class="field"><label for="empresa">Empresa</label><input id="empresa" name="empresa" autocomplete="organization" required></div>
+          <div class="field field-wide"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+          <div class="field field-wide"><label for="mensagem">Conte-nos o que tem em mente</label><textarea id="mensagem" name="mensagem" required></textarea></div>
+          <button class="submit" type="submit"><span>Começar a conversa</span><span aria-hidden="true">↗</span></button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-main"><div class="footer-brand"><img class="brand-logo-image" src="eclat-logo-champagne-pearl.png" width="1254" height="1254" alt="Éclat — A Arte de celebrar"></div><div class="footer-links"><a href="#sobre">Sobre</a><a href="#servicos">Serviços</a><a href="mailto:ola.eclat@gmail.com">Email</a><a href="https://eclatmoments.pt">eclatmoments.pt</a></div></div>
+    <div class="footer-meta"><span>© <span id="year"></span> Éclat. Todos os direitos reservados.</span><span>Portugal · Corporate experiences worldwide</span></div>
+  </footer>
+
+  <script>
+    (() => {
+      const body = document.body;
+      const header = document.querySelector('.header');
+      const progress = document.querySelector('.progress');
+      const menuButton = document.querySelector('.menu-button');
+      const menu = document.querySelector('.menu-layer');
+      const heroTitle = document.querySelector('.hero-title');
+      const heroMedia = document.querySelector('.hero-media');
+      const heroVisual = heroMedia.querySelector('.hero-aperture');
+      const root = document.documentElement;
+      const canvas = document.querySelector('.ambient-canvas');
+      const context = canvas.getContext('2d');
+      const cursor = document.querySelector('.cursor-orbit');
+      const methodMoments = [...document.querySelectorAll('.method-moment')];
+      const kineticHeadings = [...document.querySelectorAll('.manifesto h2, .services-intro h2, .contact h2')];
+      const magneticTargets = [...document.querySelectorAll('.round-link, .menu-button, .project-link, .submit')];
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      document.querySelector('#year').textContent = new Date().getFullYear();
+      requestAnimationFrame(() => setTimeout(() => body.classList.add('is-ready'), reducedMotion ? 0 : 700));
+
+      const updateScroll = () => {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        progress.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+        header.classList.toggle('scrolled', scrollY > 20);
+      };
+      updateScroll();
+      addEventListener('scroll', updateScroll, { passive: true });
+
+      const setMenu = (open) => {
+        body.classList.toggle('menu-open', open);
+        menuButton.setAttribute('aria-expanded', String(open));
+        menuButton.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+        menu.setAttribute('aria-hidden', String(!open));
+      };
+      menuButton.addEventListener('click', () => setMenu(!body.classList.contains('menu-open')));
+      menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
+      addEventListener('keydown', (event) => { if (event.key === 'Escape') setMenu(false); });
+
+      if ('IntersectionObserver' in window && !reducedMotion) {
+        const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+          if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+        }), { threshold: .13, rootMargin: '0px 0px -7% 0px' });
+        document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+      } else {
+        document.querySelectorAll('.reveal').forEach((element) => element.classList.add('visible'));
+      }
+
+      if (!reducedMotion) body.classList.add('motion-ready');
+      else methodMoments.forEach((moment) => moment.classList.add('is-active'));
+
+      const scene = document.querySelector('#service-scene');
+      const sceneDetail = scene.querySelector('.service-detail');
+      const sceneTitle = scene.querySelector('h3');
+      const sceneTag = scene.querySelector('.service-tag');
+      const sceneCopy = scene.querySelector('p');
+      const choices = [...document.querySelectorAll('.service-choice')];
+      let activeChoice = choices[0];
+      let serviceTimer;
+      const selectService = (choice) => {
+        if (choice === activeChoice) return;
+        const previousPosition = Number.parseFloat(activeChoice.dataset.position);
+        const nextPosition = Number.parseFloat(choice.dataset.position);
+        const direction = Math.sign(nextPosition - previousPosition) || 1;
+        scene.style.setProperty('--scene-drift', `${direction * -22}px`);
+        scene.style.setProperty('--scene-tilt', `${direction * 1.4}deg`);
+        activeChoice = choice;
+        choices.forEach((item) => item.classList.toggle('active', item === choice));
+        scene.style.setProperty('--scene-position', choice.dataset.position);
+        clearTimeout(serviceTimer);
+        sceneDetail.classList.add('outgoing');
+        const commitService = () => {
+          sceneTitle.textContent = choice.dataset.title;
+          sceneTag.textContent = choice.dataset.tag;
+          sceneCopy.textContent = choice.dataset.copy;
+          sceneDetail.classList.remove('outgoing');
+          sceneDetail.classList.remove('swap');
+          void sceneDetail.offsetWidth;
+          sceneDetail.classList.add('swap');
+        };
+        if (!reducedMotion) {
+          scene.classList.remove('is-changing');
+          void scene.offsetWidth;
+          scene.classList.add('is-changing');
+          serviceTimer = setTimeout(commitService, 300);
+        } else {
+          commitService();
+        }
+      };
+      choices.forEach((choice) => {
+        choice.addEventListener('mouseenter', () => selectService(choice));
+        choice.addEventListener('focus', () => selectService(choice));
+        choice.addEventListener('click', () => selectService(choice));
+      });
+
+      let pointerX = innerWidth * .5;
+      let pointerY = innerHeight * .5;
+      let cursorX = pointerX;
+      let cursorY = pointerY;
+      let previousScroll = scrollY;
+      let scrollVelocity = 0;
+      let canvasWidth = innerWidth;
+      let canvasHeight = innerHeight;
+      let particles = [];
+
+      const createParticles = () => {
+        const count = Math.min(34, Math.max(18, Math.round(canvasWidth / 54)));
+        particles = Array.from({ length: count }, (_, index) => ({
+          x: Math.random() * canvasWidth,
+          y: Math.random() * canvasHeight,
+          radius: index % 7 === 0 ? 1.4 : .65 + Math.random() * .7,
+          driftX: (Math.random() - .5) * .11,
+          driftY: -.04 - Math.random() * .12,
+          depth: .35 + Math.random() * .9,
+          phase: Math.random() * Math.PI * 2
+        }));
+      };
+
+      const resizeMotion = () => {
+        canvasWidth = innerWidth;
+        canvasHeight = innerHeight;
+        const ratio = Math.min(devicePixelRatio || 1, 1.5);
+        canvas.width = Math.round(canvasWidth * ratio);
+        canvas.height = Math.round(canvasHeight * ratio);
+        canvas.style.width = `${canvasWidth}px`;
+        canvas.style.height = `${canvasHeight}px`;
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
+        createParticles();
+      };
+
+      const drawAmbient = (time) => {
+        context.clearRect(0, 0, canvasWidth, canvasHeight);
+        const halo = context.createRadialGradient(pointerX, pointerY, 0, pointerX, pointerY, Math.min(320, canvasWidth * .24));
+        halo.addColorStop(0, 'rgba(234,216,173,.055)');
+        halo.addColorStop(1, 'rgba(234,216,173,0)');
+        context.fillStyle = halo;
+        context.fillRect(0, 0, canvasWidth, canvasHeight);
+
+        particles.forEach((particle, index) => {
+          particle.x += particle.driftX + Math.sin(time * .00025 + particle.phase) * .035;
+          particle.y += particle.driftY - scrollVelocity * .006 * particle.depth;
+          if (particle.y < -12) { particle.y = canvasHeight + 12; particle.x = Math.random() * canvasWidth; }
+          if (particle.x < -12) particle.x = canvasWidth + 12;
+          if (particle.x > canvasWidth + 12) particle.x = -12;
+
+          const pulse = .45 + Math.sin(time * .001 + particle.phase) * .28;
+          context.beginPath();
+          context.fillStyle = `rgba(234,216,173,${Math.max(.08, pulse)})`;
+          context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+          context.fill();
+
+          if (index % 3 === 0) {
+            let nearest = null;
+            let nearestDistance = 150;
+            particles.forEach((candidate) => {
+              if (candidate === particle) return;
+              const dx = candidate.x - particle.x;
+              const dy = candidate.y - particle.y;
+              const distance = Math.hypot(dx, dy);
+              if (distance < nearestDistance) { nearest = candidate; nearestDistance = distance; }
+            });
+            if (nearest) {
+              context.beginPath();
+              context.strokeStyle = `rgba(210,181,116,${(1 - nearestDistance / 150) * .13})`;
+              context.lineWidth = .55;
+              context.moveTo(particle.x, particle.y);
+              context.lineTo(nearest.x, nearest.y);
+              context.stroke();
+            }
+          }
+        });
+      };
+
+      const renderMotion = (time) => {
+        const scrollDelta = scrollY - previousScroll;
+        previousScroll = scrollY;
+        scrollVelocity += (scrollDelta - scrollVelocity) * .18;
+        scrollVelocity *= .9;
+
+        cursorX += (pointerX - cursorX) * .16;
+        cursorY += (pointerY - cursorY) * .16;
+        root.style.setProperty('--cursor-x', `${cursorX}px`);
+        root.style.setProperty('--cursor-y', `${cursorY}px`);
+
+        const heroProgress = Math.min(Math.max(scrollY / innerHeight, 0), 1);
+        heroTitle.style.setProperty('--title-shift', `${heroProgress * -54}px`);
+        heroTitle.style.setProperty('--title-tilt', `${Math.max(-1.2, Math.min(1.2, scrollVelocity * -.035))}deg`);
+        heroMedia.style.setProperty('--media-shift', `${heroProgress * 48}px`);
+
+        kineticHeadings.forEach((heading) => {
+          const rect = heading.getBoundingClientRect();
+          const progressThroughView = Math.max(0, Math.min(1, (innerHeight - rect.top) / (innerHeight + rect.height)));
+          const kineticRange = innerWidth < 680 ? 12 : 54;
+          const shift = (progressThroughView - .5) * kineticRange;
+          heading.style.setProperty('--kinetic-x', `${shift}px`);
+          heading.style.setProperty('--kinetic-rotate', `${(progressThroughView - .5) * .7}deg`);
+        });
+
+        methodMoments.forEach((moment) => {
+          const rect = moment.getBoundingClientRect();
+          const distance = Math.abs(rect.top + rect.height * .5 - innerHeight * .5);
+          const strength = Math.max(0, 1 - distance / (innerHeight * .7));
+          const eased = 1 - Math.pow(1 - strength, 3);
+          const motionRange = innerWidth < 680 ? 0 : innerWidth < 980 ? 20 : 42;
+          moment.style.setProperty('--moment-opacity', `${.22 + eased * .78}`);
+          moment.style.setProperty('--moment-shift', `${(1 - eased) * -motionRange}px`);
+          moment.style.setProperty('--moment-scale', `${.965 + eased * .035}`);
+          moment.style.setProperty('--moment-line', `${eased}`);
+          moment.classList.toggle('is-active', eased > .58);
+        });
+
+        drawAmbient(time);
+        requestAnimationFrame(renderMotion);
+      };
+
+      if (!reducedMotion) {
+        resizeMotion();
+        addEventListener('resize', resizeMotion, { passive: true });
+        addEventListener('pointermove', (event) => {
+          pointerX = event.clientX;
+          pointerY = event.clientY;
+          root.style.setProperty('--px', `${pointerX}px`);
+          root.style.setProperty('--py', `${pointerY}px`);
+          body.classList.add('pointer-live');
+          cursor.classList.toggle('is-active', Boolean(event.target.closest('a, button, input, textarea')));
+          heroVisual.style.setProperty('--visual-x', `${(pointerX / innerWidth - .5) * 1.8}%`);
+          heroVisual.style.setProperty('--visual-y', `${(pointerY / innerHeight - .5) * 1.8}%`);
+
+          magneticTargets.forEach((target) => {
+            const rect = target.getBoundingClientRect();
+            const dx = pointerX - (rect.left + rect.width * .5);
+            const dy = pointerY - (rect.top + rect.height * .5);
+            const distance = Math.hypot(dx, dy);
+            target.style.translate = distance < 110 ? `${dx * .14}px ${dy * .14}px` : '0 0';
+          });
+        }, { passive: true });
+        addEventListener('pointerleave', () => {
+          body.classList.remove('pointer-live');
+          magneticTargets.forEach((target) => { target.style.translate = '0 0'; });
+        });
+        requestAnimationFrame(renderMotion);
+      }
+
+      document.querySelector('#contact-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const subject = encodeURIComponent(`Novo projeto Éclat — ${data.get('empresa')}`);
+        const message = encodeURIComponent(`Nome: ${data.get('nome')}\nEmpresa: ${data.get('empresa')}\nEmail: ${data.get('email')}\n\nEvento:\n${data.get('mensagem')}`);
+        location.href = `mailto:ola.eclat@gmail.com?subject=${subject}&body=${message}`;
+      });
+    })();
+  </script>
+</body>
+</html>
