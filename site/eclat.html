@@ -776,6 +776,14 @@
       .hero-title > span, .hero-title > em { clip-path: inset(0); opacity: 1; transform: none; }
       .method-moment.reveal { opacity: 1; transform: none; }
     }
+    /* Sound toggle */
+    .sound-toggle { position: fixed; right: clamp(1rem, 2.2vw, 2rem); bottom: clamp(1rem, 2.2vw, 2rem); z-index: 60; display: inline-flex; align-items: center; justify-content: center; width: 2.9rem; height: 2.9rem; border-radius: 50%; border: 1px solid var(--line); background: rgba(4,17,15,.55); color: var(--champagne); cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: transform .3s ease, border-color .3s ease, background .3s ease; -webkit-tap-highlight-color: transparent; }
+    .sound-toggle:hover { transform: translateY(-2px); border-color: var(--champagne); background: rgba(4,17,15,.78); }
+    .sound-toggle svg { width: 1.05rem; height: 1.05rem; display: block; }
+    .sound-toggle .icon-off { display: none; }
+    .sound-toggle[aria-pressed="false"] .icon-on { display: none; }
+    .sound-toggle[aria-pressed="false"] .icon-off { display: block; }
+    @media (prefers-reduced-motion: reduce) { .sound-toggle { transition: none; } .sound-toggle:hover { transform: none; } }
   </style>
 </head>
 <body>
@@ -874,6 +882,11 @@
     <div class="footer-main"><div class="footer-brand"><img class="brand-logo-image" src="eclat-logo-champagne-pearl.png" width="1254" height="1254" alt="Éclat — A Arte de celebrar"></div><div class="footer-links"><a href="#sobre">Sobre</a><a href="#servicos">Serviços</a><a href="mailto:ola.eclat@gmail.com">Email</a><a href="https://eclatmoments.pt">eclatmoments.pt</a></div></div>
     <div class="footer-meta"><span>© <span id="year"></span> Éclat. Todos os direitos reservados.</span><span>Portugal · Corporate experiences worldwide</span></div>
   </footer>
+
+  <button class="sound-toggle" type="button" aria-pressed="true" aria-label="Silenciar sons" title="Som">
+    <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.6 5.5a9 9 0 0 1 0 13"/></svg>
+    <svg class="icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+  </button>
 
   <script>
     (() => {
@@ -1126,6 +1139,49 @@
         const message = encodeURIComponent(`Nome: ${data.get('nome')}\nEmpresa: ${data.get('empresa')}\nEmail: ${data.get('email')}\n\nEvento:\n${data.get('mensagem')}`);
         location.href = `mailto:ola.eclat@gmail.com?subject=${subject}&body=${message}`;
       });
+
+      /* Subtle button sound + mute toggle */
+      const SOUND_KEY = 'eclat-sound';
+      let soundOn = true;
+      try { soundOn = localStorage.getItem(SOUND_KEY) !== 'off'; } catch (e) {}
+      const soundToggle = document.querySelector('.sound-toggle');
+      const clickPool = [];
+      const POOL_SIZE = 4;
+      let poolReady = false;
+      let poolIndex = 0;
+      const buildPool = () => {
+        if (poolReady) return;
+        for (let i = 0; i < POOL_SIZE; i += 1) {
+          const audio = new Audio('button.mp3');
+          audio.preload = 'auto';
+          audio.volume = 0.8;
+          clickPool.push(audio);
+        }
+        poolReady = true;
+      };
+      const playClick = () => {
+        if (!soundOn) return;
+        buildPool();
+        const audio = clickPool[poolIndex];
+        poolIndex = (poolIndex + 1) % clickPool.length;
+        try { audio.currentTime = 0; const played = audio.play(); if (played && played.catch) played.catch(() => {}); } catch (e) {}
+      };
+      const syncSound = () => {
+        if (!soundToggle) return;
+        soundToggle.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+        soundToggle.setAttribute('aria-label', soundOn ? 'Silenciar sons' : 'Ativar sons');
+      };
+      if (soundToggle) {
+        syncSound();
+        soundToggle.addEventListener('click', () => {
+          soundOn = !soundOn;
+          try { localStorage.setItem(SOUND_KEY, soundOn ? 'on' : 'off'); } catch (e) {}
+          syncSound();
+          if (soundOn) playClick();
+        });
+      }
+      document.querySelectorAll('.project-link, .round-link, .menu-button, .service-choice, .submit')
+        .forEach((el) => el.addEventListener('click', playClick));
     })();
   </script>
 </body>

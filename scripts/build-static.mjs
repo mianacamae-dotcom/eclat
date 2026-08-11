@@ -36,6 +36,7 @@ const assets = [
   ["site/eclat-logo-champagne-pearl-no-tagline.png", "eclat-logo-champagne-pearl-no-tagline.png"],
   ["public/og.png", "og.png"],
   ["public/favicon.svg", "favicon.svg"],
+  ["public/button.mp3", "button.mp3"],
 ];
 for (const [from, to] of assets) {
   await copyFile(new URL(from, root), new URL(to, dist));
