@@ -1180,8 +1180,8 @@
           if (soundOn) playClick();
         });
       }
-      document.querySelectorAll('.project-link, .round-link, .menu-button, .service-choice, .submit')
-        .forEach((el) => el.addEventListener('click', playClick));
+      document.querySelectorAll('a[href], button')
+        .forEach((el) => { if (!el.classList.contains('sound-toggle')) el.addEventListener('click', playClick); });
     })();
   </script>
 </body>
