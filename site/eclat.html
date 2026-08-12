@@ -373,7 +373,8 @@
     }
     .is-ready .hero-media::before { animation: hero-scan 1.8s .55s cubic-bezier(.22,1,.36,1) both; }
     .hero-media::after { background: linear-gradient(90deg, rgba(4,17,15,.74), transparent 36%), linear-gradient(0deg, rgba(4,17,15,.38), transparent 28%); content: ""; inset: 0; pointer-events: none; position: absolute; }
-    .hero-caption { bottom: 2.2rem; display: flex; font-size: .53rem; justify-content: space-between; left: 15%; letter-spacing: .16em; position: absolute; right: 2.5rem; text-transform: uppercase; z-index: 2; }
+    .hero-caption { bottom: 2.2rem; display: flex; font-size: .53rem; justify-content: space-between; left: 15%; letter-spacing: .16em; position: absolute; right: 5.6rem; text-transform: uppercase; z-index: 2; }
+    .hero-caption span:last-child { white-space: nowrap; text-align: right; }
     .hero-side { bottom: 3rem; color: var(--stone); font-size: .5rem; left: 1rem; letter-spacing: .16em; position: absolute; text-transform: uppercase; writing-mode: vertical-rl; }
 
     .manifesto {
@@ -643,14 +644,23 @@
     .cookie-notice p { margin: 0; font-size: .76rem; line-height: 1.62; color: #d7d2c4; }
     .cookie-notice a { color: var(--champagne); border-bottom: 1px solid var(--line); }
     .cookie-notice a:hover { color: var(--champagne-pale); }
-    .cookie-accept {
-      justify-self: start; cursor: pointer;
-      background: var(--champagne); color: #12140f; border: none; border-radius: 999px;
+    .cookie-actions { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+    .cookie-accept, .cookie-reject {
+      cursor: pointer; border-radius: 999px;
       padding: .52rem 1.5rem; font-family: var(--body); font-weight: 600;
       font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
-      transition: transform .3s ease, background .3s ease; -webkit-tap-highlight-color: transparent;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cookie-accept {
+      background: var(--champagne); color: #12140f; border: none;
+      transition: transform .3s ease, background .3s ease;
     }
     .cookie-accept:hover { transform: translateY(-1px); background: var(--champagne-pale); }
+    .cookie-reject {
+      background: transparent; color: var(--stone); border: 1px solid var(--line); font-weight: 500;
+      transition: color .3s ease, border-color .3s ease;
+    }
+    .cookie-reject:hover { color: var(--ivory); border-color: var(--champagne); }
     @media (prefers-reduced-motion: reduce) {
       .cookie-notice { transition: opacity .3s ease; transform: none; }
       .cookie-accept:hover { transform: none; }
@@ -927,8 +937,11 @@
   </button>
 
   <aside class="cookie-notice" id="cookie-notice" role="region" aria-label="Aviso de privacidade" hidden>
-    <p>Utilizamos apenas armazenamento essencial para o site funcionar (como a sua preferência de som). Não usamos cookies de publicidade nem de rastreio. <a href="privacidade.html" target="_blank" rel="noopener">Saber mais</a></p>
-    <button type="button" class="cookie-accept">Aceitar</button>
+    <p>Utilizamos apenas armazenamento essencial. Se autorizar, guardamos a sua preferência de som para as próximas visitas. Não usamos cookies de publicidade nem de rastreio. <a href="privacidade.html" target="_blank" rel="noopener">Saber mais</a></p>
+    <div class="cookie-actions">
+      <button type="button" class="cookie-accept">Aceitar</button>
+      <button type="button" class="cookie-reject">Rejeitar</button>
+    </div>
   </aside>
 
   <script>
@@ -1183,10 +1196,15 @@
         location.href = `mailto:ola.eclat@gmail.com?subject=${subject}&body=${message}`;
       });
 
+      /* Consent for optional (functional) local storage */
+      const CONSENT_KEY = 'eclat-cookie-consent';
+      let consent = 'unset';
+      try { consent = localStorage.getItem(CONSENT_KEY) || 'unset'; } catch (e) {}
+
       /* Subtle button sound + mute toggle */
       const SOUND_KEY = 'eclat-sound';
       let soundOn = true;
-      try { soundOn = localStorage.getItem(SOUND_KEY) !== 'off'; } catch (e) {}
+      if (consent === 'accepted') { try { soundOn = localStorage.getItem(SOUND_KEY) !== 'off'; } catch (e) {} }
       const soundToggle = document.querySelector('.sound-toggle');
       const clickPool = [];
       const POOL_SIZE = 4;
@@ -1218,7 +1236,7 @@
         syncSound();
         soundToggle.addEventListener('click', () => {
           soundOn = !soundOn;
-          try { localStorage.setItem(SOUND_KEY, soundOn ? 'on' : 'off'); } catch (e) {}
+          if (consent === 'accepted') { try { localStorage.setItem(SOUND_KEY, soundOn ? 'on' : 'off'); } catch (e) {} }
           syncSound();
           if (soundOn) playClick();
         });
@@ -1283,21 +1301,26 @@
         }
       }
 
-      /* Discreet cookie / privacy notice */
-      const COOKIE_KEY = 'eclat-cookie-notice';
+      /* Discreet cookie / privacy notice with accept + reject */
       const cookieNotice = document.querySelector('#cookie-notice');
-      let cookieAck = false;
-      try { cookieAck = localStorage.getItem(COOKIE_KEY) === 'ok'; } catch (e) {}
-      if (cookieNotice && !cookieAck) {
+      if (cookieNotice && consent === 'unset') {
         cookieNotice.hidden = false;
         setTimeout(() => requestAnimationFrame(() => cookieNotice.classList.add('is-visible')), 900);
-        const dismissCookie = () => {
+        const decideCookie = (choice) => {
+          consent = choice;
+          try { localStorage.setItem(CONSENT_KEY, choice); } catch (e) {}
+          if (choice === 'accepted') {
+            try { localStorage.setItem(SOUND_KEY, soundOn ? 'on' : 'off'); } catch (e) {}
+          } else {
+            try { localStorage.removeItem(SOUND_KEY); } catch (e) {}
+          }
           cookieNotice.classList.remove('is-visible');
-          try { localStorage.setItem(COOKIE_KEY, 'ok'); } catch (e) {}
           setTimeout(() => { cookieNotice.hidden = true; }, 600);
         };
         const acceptBtn = cookieNotice.querySelector('.cookie-accept');
-        if (acceptBtn) acceptBtn.addEventListener('click', dismissCookie);
+        const rejectBtn = cookieNotice.querySelector('.cookie-reject');
+        if (acceptBtn) acceptBtn.addEventListener('click', () => decideCookie('accepted'));
+        if (rejectBtn) rejectBtn.addEventListener('click', () => decideCookie('rejected'));
       }
     })();
   </script>
