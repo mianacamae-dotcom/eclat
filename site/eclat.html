@@ -1273,7 +1273,7 @@
         });
       }
       document.querySelectorAll('a[href], button')
-        .forEach((el) => { if (!el.classList.contains('sound-toggle')) el.addEventListener('click', playClick); });
+        .forEach((el) => { if (!el.classList.contains('sound-toggle')) el.addEventListener('pointerdown', playClick); });
 
       /* Hover sound (mouse/desktop only), shares the same mute state */
       const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;

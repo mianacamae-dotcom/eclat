@@ -124,6 +124,21 @@
     .sound-toggle[aria-pressed="false"] .icon-on { display: none; }
     .sound-toggle[aria-pressed="false"] .icon-off { display: block; }
     @media (prefers-reduced-motion: reduce) { .sound-toggle { transition: none; } .sound-toggle:hover { transform: none; } }
+
+    /* Custom cursor (matches the main site) */
+    .cursor-orbit {
+      align-items: center; border: 1px solid rgba(234,216,173,.54); border-radius: 50%;
+      display: flex; height: 2.4rem; justify-content: center; left: 0; opacity: 0;
+      pointer-events: none; position: fixed; top: 0;
+      translate: calc(var(--cursor-x, -5rem) - 50%) calc(var(--cursor-y, -5rem) - 50%);
+      transition: height .4s cubic-bezier(.22,1,.36,1), width .4s cubic-bezier(.22,1,.36,1), border-color .3s ease, opacity .3s ease;
+      width: 2.4rem; z-index: 250;
+    }
+    .cursor-orbit::after { background: var(--champagne-pale); border-radius: 50%; content: ""; height: 3px; width: 3px; }
+    .pointer-live .cursor-orbit { opacity: 1; }
+    .pointer-live .cursor-orbit.is-active { border-color: var(--champagne); height: 4.8rem; width: 4.8rem; }
+    @media (prefers-reduced-motion: reduce) { .cursor-orbit { display: none; } }
+    @media (hover: none), (pointer: coarse) { .cursor-orbit { display: none; } }
   </style>
 </head>
 <body>
@@ -251,6 +266,8 @@
     </footer>
   </div>
 
+  <div class="cursor-orbit" aria-hidden="true"></div>
+
   <button class="sound-toggle" type="button" aria-pressed="true" aria-label="Silenciar sons" title="Som">
     <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.6 5.5a9 9 0 0 1 0 13"/></svg>
     <svg class="icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
@@ -259,9 +276,16 @@
   <script>
     (() => {
       const CONSENT_KEY = 'eclat-cookie-consent';
+      const CONSENT_TS_KEY = 'eclat-privacy-decided-at';
       const SOUND_KEY = 'eclat-sound';
+      const PRIVACY_MAX_AGE = 365 * 24 * 60 * 60 * 1000; // ~12 months
       let consent = 'unset';
-      try { consent = localStorage.getItem(CONSENT_KEY) || 'unset'; } catch (e) {}
+      try {
+        const v = localStorage.getItem(CONSENT_KEY);
+        const ts = parseInt(localStorage.getItem(CONSENT_TS_KEY) || '0', 10);
+        if ((v === 'accepted' || v === 'rejected') && ts && (Date.now() - ts) <= PRIVACY_MAX_AGE) { consent = v; }
+        else if (v) { localStorage.removeItem(CONSENT_KEY); localStorage.removeItem(CONSENT_TS_KEY); localStorage.removeItem(SOUND_KEY); }
+      } catch (e) {}
       let soundOn = true;
       if (consent === 'accepted') { try { soundOn = localStorage.getItem(SOUND_KEY) !== 'off'; } catch (e) {} }
 
@@ -279,7 +303,7 @@
           if (soundOn) playClick();
         });
       }
-      document.querySelectorAll('a[href], button').forEach((el) => { if (!el.classList.contains('sound-toggle')) el.addEventListener('click', playClick); });
+      document.querySelectorAll('a[href], button').forEach((el) => { if (!el.classList.contains('sound-toggle')) el.addEventListener('pointerdown', playClick); });
 
       const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
       if (canHover) {
@@ -305,6 +329,28 @@
           addEventListener('resize', req);
           positionToggle();
         }
+      }
+
+      /* Custom cursor (matches the main site) */
+      const orbit = document.querySelector('.cursor-orbit');
+      const fineHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (orbit && fineHover && !reducedMotion) {
+        const root = document.documentElement;
+        let px = window.innerWidth / 2, py = window.innerHeight / 2, cx = px, cy = py;
+        addEventListener('pointermove', (event) => {
+          px = event.clientX; py = event.clientY;
+          document.body.classList.add('pointer-live');
+          orbit.classList.toggle('is-active', Boolean(event.target.closest('a, button, input, textarea')));
+        }, { passive: true });
+        addEventListener('pointerleave', () => document.body.classList.remove('pointer-live'));
+        const loop = () => {
+          cx += (px - cx) * 0.16; cy += (py - cy) * 0.16;
+          root.style.setProperty('--cursor-x', cx + 'px');
+          root.style.setProperty('--cursor-y', cy + 'px');
+          requestAnimationFrame(loop);
+        };
+        requestAnimationFrame(loop);
       }
     })();
   </script>
