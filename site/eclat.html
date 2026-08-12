@@ -1154,7 +1154,7 @@
         for (let i = 0; i < POOL_SIZE; i += 1) {
           const audio = new Audio('button.mp3');
           audio.preload = 'auto';
-          audio.volume = 0.3;
+          audio.volume = 0.18;
           clickPool.push(audio);
         }
         poolReady = true;
@@ -1196,7 +1196,7 @@
           for (let i = 0; i < HOVER_POOL; i += 1) {
             const audio = new Audio('hover.mp3');
             audio.preload = 'auto';
-            audio.volume = 0.15;
+            audio.volume = 0.09;
             hoverPool.push(audio);
           }
           hoverReady = true;
