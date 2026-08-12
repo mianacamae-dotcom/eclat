@@ -47,7 +47,7 @@
       gap: 1rem; padding-bottom: clamp(2rem, 5vw, 3rem);
       border-bottom: 1px solid var(--line); margin-bottom: clamp(2.5rem, 6vw, 4rem);
     }
-    .brand img { height: clamp(2.6rem, 7vw, 3.4rem); width: auto; display: block; }
+    .brand img { height: clamp(3.4rem, 6vw, 4.6rem); width: auto; display: block; }
     .back-link {
       font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
       display: inline-flex; align-items: center; gap: .5rem;
@@ -103,6 +103,15 @@
       border-top: 1px solid var(--line); color: var(--stone); font-size: .8rem;
       display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center;
     }
+
+    /* Sound toggle */
+    .sound-toggle { position: fixed; right: clamp(1rem, 2.2vw, 2rem); bottom: clamp(1rem, 2.2vw, 2rem); z-index: 60; display: inline-flex; align-items: center; justify-content: center; width: 2.9rem; height: 2.9rem; border-radius: 50%; border: 1px solid var(--line); background: rgba(4,17,15,.55); color: var(--champagne); cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: transform .3s ease, border-color .3s ease, background .3s ease, bottom .35s ease; -webkit-tap-highlight-color: transparent; }
+    .sound-toggle:hover { transform: translateY(-2px); border-color: var(--champagne); background: rgba(4,17,15,.78); }
+    .sound-toggle svg { width: 1.05rem; height: 1.05rem; display: block; }
+    .sound-toggle .icon-off { display: none; }
+    .sound-toggle[aria-pressed="false"] .icon-on { display: none; }
+    .sound-toggle[aria-pressed="false"] .icon-off { display: block; }
+    @media (prefers-reduced-motion: reduce) { .sound-toggle { transition: none; } .sound-toggle:hover { transform: none; } }
   </style>
 </head>
 <body>
@@ -211,5 +220,63 @@
       <a href="index.html">← Voltar ao site</a>
     </footer>
   </div>
+
+  <button class="sound-toggle" type="button" aria-pressed="true" aria-label="Silenciar sons" title="Som">
+    <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.6 5.5a9 9 0 0 1 0 13"/></svg>
+    <svg class="icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+  </button>
+
+  <script>
+    (() => {
+      const CONSENT_KEY = 'eclat-cookie-consent';
+      const SOUND_KEY = 'eclat-sound';
+      let consent = 'unset';
+      try { consent = localStorage.getItem(CONSENT_KEY) || 'unset'; } catch (e) {}
+      let soundOn = true;
+      if (consent === 'accepted') { try { soundOn = localStorage.getItem(SOUND_KEY) !== 'off'; } catch (e) {} }
+
+      const toggle = document.querySelector('.sound-toggle');
+      const clickPool = []; let clickReady = false, clickIndex = 0;
+      const buildClick = () => { if (clickReady) return; for (let i = 0; i < 4; i += 1) { const a = new Audio('button.mp3'); a.preload = 'auto'; a.volume = 0.18; clickPool.push(a); } clickReady = true; };
+      const playClick = () => { if (!soundOn) return; buildClick(); const a = clickPool[clickIndex]; clickIndex = (clickIndex + 1) % clickPool.length; try { a.currentTime = 0; const p = a.play(); if (p && p.catch) p.catch(() => {}); } catch (e) {} };
+      const sync = () => { if (!toggle) return; toggle.setAttribute('aria-pressed', soundOn ? 'true' : 'false'); toggle.setAttribute('aria-label', soundOn ? 'Silenciar sons' : 'Ativar sons'); };
+      if (toggle) {
+        sync();
+        toggle.addEventListener('click', () => {
+          soundOn = !soundOn;
+          if (consent === 'accepted') { try { localStorage.setItem(SOUND_KEY, soundOn ? 'on' : 'off'); } catch (e) {} }
+          sync();
+          if (soundOn) playClick();
+        });
+      }
+      document.querySelectorAll('a[href], button').forEach((el) => { if (!el.classList.contains('sound-toggle')) el.addEventListener('click', playClick); });
+
+      const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      if (canHover) {
+        const hoverPool = []; let hoverReady = false, hoverIndex = 0, lastHover = 0;
+        const buildHover = () => { if (hoverReady) return; for (let i = 0; i < 3; i += 1) { const a = new Audio('hover.mp3'); a.preload = 'auto'; a.volume = 0.09; hoverPool.push(a); } hoverReady = true; };
+        const playHover = () => { if (!soundOn) return; const now = Date.now(); if (now - lastHover < 90) return; lastHover = now; buildHover(); const a = hoverPool[hoverIndex]; hoverIndex = (hoverIndex + 1) % hoverPool.length; try { a.currentTime = 0; const p = a.play(); if (p && p.catch) p.catch(() => {}); } catch (e) {} };
+        document.querySelectorAll('a[href], button').forEach((el) => { if (!el.classList.contains('sound-toggle')) el.addEventListener('mouseenter', playHover); });
+      }
+
+      if (toggle) {
+        const foot = document.querySelector('.doc-foot');
+        if (foot) {
+          let ticking = false;
+          const positionToggle = () => {
+            ticking = false;
+            const vh = window.innerHeight;
+            const r = foot.getBoundingClientRect();
+            const need = (r.top < vh && r.bottom > vh - 88) ? (vh - r.top) + 14 : 0;
+            toggle.style.bottom = need > 0 ? need + 'px' : '';
+          };
+          const req = () => { if (ticking) return; ticking = true; requestAnimationFrame(positionToggle); };
+          addEventListener('scroll', req, { passive: true });
+          addEventListener('resize', req);
+          positionToggle();
+        }
+      }
+    })();
+  </script>
 </body>
 </html>
