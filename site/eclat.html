@@ -777,7 +777,7 @@
       .method-moment.reveal { opacity: 1; transform: none; }
     }
     /* Sound toggle */
-    .sound-toggle { position: fixed; right: clamp(1rem, 2.2vw, 2rem); bottom: clamp(1rem, 2.2vw, 2rem); z-index: 60; display: inline-flex; align-items: center; justify-content: center; width: 2.9rem; height: 2.9rem; border-radius: 50%; border: 1px solid var(--line); background: rgba(4,17,15,.55); color: var(--champagne); cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: transform .3s ease, border-color .3s ease, background .3s ease; -webkit-tap-highlight-color: transparent; }
+    .sound-toggle { position: fixed; right: clamp(1rem, 2.2vw, 2rem); bottom: clamp(1rem, 2.2vw, 2rem); z-index: 60; display: inline-flex; align-items: center; justify-content: center; width: 2.9rem; height: 2.9rem; border-radius: 50%; border: 1px solid var(--line); background: rgba(4,17,15,.55); color: var(--champagne); cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: transform .3s ease, border-color .3s ease, background .3s ease, bottom .35s ease; -webkit-tap-highlight-color: transparent; }
     .sound-toggle:hover { transform: translateY(-2px); border-color: var(--champagne); background: rgba(4,17,15,.78); }
     .sound-toggle svg { width: 1.05rem; height: 1.05rem; display: block; }
     .sound-toggle .icon-off { display: none; }
@@ -1213,6 +1213,31 @@
         };
         document.querySelectorAll('a[href], button')
           .forEach((el) => { if (!el.classList.contains('sound-toggle')) el.addEventListener('mouseenter', playHover); });
+      }
+
+      /* Lift the sound toggle above the footer so it never overlaps footer text */
+      if (soundToggle) {
+        const footerEl = document.querySelector('.footer');
+        if (footerEl) {
+          let ticking = false;
+          const positionToggle = () => {
+            ticking = false;
+            const overlap = window.innerHeight - footerEl.getBoundingClientRect().top;
+            if (overlap > 0) {
+              soundToggle.style.bottom = (overlap + 16) + 'px';
+            } else {
+              soundToggle.style.bottom = '';
+            }
+          };
+          const requestPosition = () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(positionToggle);
+          };
+          addEventListener('scroll', requestPosition, { passive: true });
+          addEventListener('resize', requestPosition);
+          positionToggle();
+        }
       }
     })();
   </script>
