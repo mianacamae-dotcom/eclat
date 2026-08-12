@@ -15,10 +15,22 @@
   <meta name="twitter:description" content="Eventos que transformam ambição em presença.">
   <meta name="twitter:image" content="__ORIGIN__/og.png">
   <title>Éclat — A Arte dos Eventos Corporativos</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    /* Self-hosted fonts (latin subset) — no external Google Fonts requests */
+    @font-face { font-family: 'Bodoni Moda'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/bodoni-moda-latin-400-normal.woff2') format('woff2'); }
+    @font-face { font-family: 'Bodoni Moda'; font-style: normal; font-weight: 500; font-display: swap; src: url('fonts/bodoni-moda-latin-500-normal.woff2') format('woff2'); }
+    @font-face { font-family: 'Bodoni Moda'; font-style: italic; font-weight: 400; font-display: swap; src: url('fonts/bodoni-moda-latin-400-italic.woff2') format('woff2'); }
+    @font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/instrument-serif-latin-400-normal.woff2') format('woff2'); }
+    @font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('fonts/instrument-serif-latin-400-italic.woff2') format('woff2'); }
+    @font-face { font-family: 'Manrope'; font-style: normal; font-weight: 300; font-display: swap; src: url('fonts/manrope-latin-300-normal.woff2') format('woff2'); }
+    @font-face { font-family: 'Manrope'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/manrope-latin-400-normal.woff2') format('woff2'); }
+    @font-face { font-family: 'Manrope'; font-style: normal; font-weight: 500; font-display: swap; src: url('fonts/manrope-latin-500-normal.woff2') format('woff2'); }
+    @font-face { font-family: 'Manrope'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/manrope-latin-600-normal.woff2') format('woff2'); }
+    @font-face { font-family: 'Syne'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/syne-latin-400-normal.woff2') format('woff2'); }
+    @font-face { font-family: 'Syne'; font-style: normal; font-weight: 500; font-display: swap; src: url('fonts/syne-latin-500-normal.woff2') format('woff2'); }
+    @font-face { font-family: 'Syne'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/syne-latin-600-normal.woff2') format('woff2'); }
+    @font-face { font-family: 'Syne'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/syne-latin-700-normal.woff2') format('woff2'); }
+    @font-face { font-family: 'Syne'; font-style: normal; font-weight: 800; font-display: swap; src: url('fonts/syne-latin-800-normal.woff2') format('woff2'); }
     :root {
       --ink: #04110f;
       --ink-soft: #09201b;
@@ -589,6 +601,11 @@
     .field input, .field textarea { background: transparent; border: 0; color: var(--ivory); outline: none; padding: .3rem 0; resize: vertical; width: 100%; }
     .field:focus-within { border-bottom-color: var(--champagne); }
     .field textarea { min-height: 5rem; }
+    .field label .req { color: var(--champagne); }
+    .form-notice { grid-column: 1 / -1; color: #8a9a92; font-size: .72rem; line-height: 1.65; margin: 0; }
+    .form-notice .req { color: var(--champagne); }
+    .form-notice a { color: var(--champagne); border-bottom: 1px solid var(--line); transition: color .3s ease; }
+    .form-notice a:hover { color: var(--champagne-pale); }
     .submit {
       align-items: center;
       background: var(--champagne);
@@ -624,6 +641,8 @@
     .footer-meta { color: #708078; display: flex; font-size: .53rem; justify-content: space-between; letter-spacing: .1em; margin-top: 4rem; text-transform: uppercase; }
     .footer-meta a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; transition: color .3s ease, border-color .3s ease; }
     .footer-meta a:hover { color: var(--champagne); border-color: var(--line); }
+    .footer-meta .pref-link { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; border-bottom: 1px solid transparent; padding: 0; cursor: pointer; transition: color .3s ease, border-color .3s ease; }
+    .footer-meta .pref-link:hover { color: var(--champagne); border-color: var(--line); }
 
     /* Cookie / privacy notice */
     .cookie-notice {
@@ -915,10 +934,11 @@
       <div class="contact-grid">
         <p class="contact-note reveal">Partilhe a sua ambição, mesmo que ainda não tenha forma. É precisamente aí que começamos.</p>
         <form class="contact-form reveal" id="contact-form">
-          <div class="field"><label for="nome">Nome</label><input id="nome" name="nome" autocomplete="name" required></div>
-          <div class="field"><label for="empresa">Empresa</label><input id="empresa" name="empresa" autocomplete="organization" required></div>
-          <div class="field field-wide"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
-          <div class="field field-wide"><label for="mensagem">Conte-nos o que tem em mente</label><textarea id="mensagem" name="mensagem" required></textarea></div>
+          <div class="field"><label for="nome">Nome <span class="req" aria-hidden="true">*</span></label><input id="nome" name="nome" autocomplete="name" required></div>
+          <div class="field"><label for="empresa">Empresa (opcional)</label><input id="empresa" name="empresa" autocomplete="organization"></div>
+          <div class="field field-wide"><label for="email">Email <span class="req" aria-hidden="true">*</span></label><input id="email" name="email" type="email" autocomplete="email" required></div>
+          <div class="field field-wide"><label for="mensagem">Conte-nos o que tem em mente <span class="req" aria-hidden="true">*</span></label><textarea id="mensagem" name="mensagem" required></textarea></div>
+          <p class="form-notice">Ao continuar, será aberta uma mensagem no seu programa de email. O envio apenas ocorre quando o confirmar. Os campos assinalados com <span class="req" aria-hidden="true">*</span> são necessários para responder ao seu pedido. Consulte a nossa <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
           <button class="submit" type="submit"><span>Começar a conversa</span><span aria-hidden="true">↗</span></button>
         </form>
       </div>
@@ -927,7 +947,7 @@
 
   <footer class="footer">
     <div class="footer-main"><div class="footer-brand"><a class="footer-top" href="#inicio" aria-label="Voltar ao topo" title="Voltar ao topo"><img class="brand-logo-image" src="eclat-logo-champagne-pearl.png" width="1254" height="1254" alt="Éclat — A Arte de celebrar"></a></div><div class="footer-links"><a href="#sobre">Sobre</a><a href="#servicos">Serviços</a><a href="mailto:ola.eclat@gmail.com">Email</a><a href="https://eclatmoments.pt">eclatmoments.pt</a></div></div>
-    <div class="footer-meta"><span>© <span id="year"></span> Éclat. Todos os direitos reservados. · <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a></span><span>Portugal · Corporate experiences worldwide</span></div>
+    <div class="footer-meta"><span>© <span id="year"></span> Éclat. Todos os direitos reservados. · <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a> · <button type="button" id="privacy-prefs" class="pref-link">Preferências de privacidade</button></span><span>Portugal · Corporate experiences worldwide</span></div>
   </footer>
 
   <button class="sound-toggle" type="button" aria-pressed="true" aria-label="Silenciar sons" title="Som">
@@ -936,7 +956,7 @@
   </button>
 
   <aside class="cookie-notice" id="cookie-notice" role="region" aria-label="Aviso de privacidade" hidden>
-    <p>Utilizamos apenas armazenamento essencial. Se autorizar, guardamos a sua preferência de som para as próximas visitas. Não usamos cookies de publicidade nem de rastreio. <a href="privacidade.html" target="_blank" rel="noopener">Saber mais</a></p>
+    <p>Este site usa armazenamento funcional opcional para recordar a sua preferência de som. Não usamos cookies de publicidade nem de rastreio. A sua escolha fica guardada apenas no seu dispositivo, durante 12 meses. <a href="privacidade.html" target="_blank" rel="noopener">Saber mais</a></p>
     <div class="cookie-actions">
       <button type="button" class="cookie-accept">Aceitar</button>
       <button type="button" class="cookie-reject">Rejeitar</button>
@@ -1190,18 +1210,30 @@
       document.querySelector('#contact-form').addEventListener('submit', (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const subject = encodeURIComponent(`Novo projeto Éclat — ${data.get('empresa')}`);
-        const message = encodeURIComponent(`Nome: ${data.get('nome')}\nEmpresa: ${data.get('empresa')}\nEmail: ${data.get('email')}\n\nEvento:\n${data.get('mensagem')}`);
+        const empresa = (data.get('empresa') || '').trim();
+        const subject = encodeURIComponent(`Novo projeto Éclat${empresa ? ' — ' + empresa : ''}`);
+        const message = encodeURIComponent(`Nome: ${data.get('nome')}\n${empresa ? 'Empresa: ' + empresa + '\n' : ''}Email: ${data.get('email')}\n\nEvento:\n${data.get('mensagem')}`);
         location.href = `mailto:ola.eclat@gmail.com?subject=${subject}&body=${message}`;
       });
 
-      /* Consent for optional (functional) local storage */
+      /* Consent for optional (functional) local storage, valid for 12 months */
       const CONSENT_KEY = 'eclat-cookie-consent';
-      let consent = 'unset';
-      try { consent = localStorage.getItem(CONSENT_KEY) || 'unset'; } catch (e) {}
+      const CONSENT_TS_KEY = 'eclat-privacy-decided-at';
+      const SOUND_KEY = 'eclat-sound';
+      const PRIVACY_MAX_AGE = 365 * 24 * 60 * 60 * 1000; // ~12 months in ms
+      const clearPrivacy = () => { try { localStorage.removeItem(CONSENT_KEY); localStorage.removeItem(CONSENT_TS_KEY); localStorage.removeItem(SOUND_KEY); } catch (e) {} };
+      const readConsent = () => {
+        try {
+          const v = localStorage.getItem(CONSENT_KEY);
+          if (v !== 'accepted' && v !== 'rejected') return 'unset';
+          const ts = parseInt(localStorage.getItem(CONSENT_TS_KEY) || '0', 10);
+          if (!ts || (Date.now() - ts) > PRIVACY_MAX_AGE) { clearPrivacy(); return 'unset'; }
+          return v;
+        } catch (e) { return 'unset'; }
+      };
+      let consent = readConsent();
 
       /* Subtle button sound + mute toggle */
-      const SOUND_KEY = 'eclat-sound';
       let soundOn = true;
       if (consent === 'accepted') { try { soundOn = localStorage.getItem(SOUND_KEY) !== 'off'; } catch (e) {} }
       const soundToggle = document.querySelector('.sound-toggle');
@@ -1303,26 +1335,44 @@
         positionToggle();
       }
 
-      /* Discreet cookie / privacy notice with accept + reject */
+      /* Privacy notice + preferences (accept / reject / reopen / withdraw) */
       const cookieNotice = document.querySelector('#cookie-notice');
-      if (cookieNotice && consent === 'unset') {
-        cookieNotice.hidden = false;
-        setTimeout(() => requestAnimationFrame(() => cookieNotice.classList.add('is-visible')), 900);
-        const decideCookie = (choice) => {
-          consent = choice;
-          try { localStorage.setItem(CONSENT_KEY, choice); } catch (e) {}
-          if (choice === 'accepted') {
-            try { localStorage.setItem(SOUND_KEY, soundOn ? 'on' : 'off'); } catch (e) {}
-          } else {
-            try { localStorage.removeItem(SOUND_KEY); } catch (e) {}
-          }
-          cookieNotice.classList.remove('is-visible');
-          setTimeout(() => { cookieNotice.hidden = true; }, 600);
-        };
+      if (cookieNotice) {
         const acceptBtn = cookieNotice.querySelector('.cookie-accept');
         const rejectBtn = cookieNotice.querySelector('.cookie-reject');
-        if (acceptBtn) acceptBtn.addEventListener('click', () => decideCookie('accepted'));
-        if (rejectBtn) rejectBtn.addEventListener('click', () => decideCookie('rejected'));
+        let hideTimer;
+        const setConsent = (choice) => {
+          consent = choice;
+          try {
+            localStorage.setItem(CONSENT_KEY, choice);
+            localStorage.setItem(CONSENT_TS_KEY, String(Date.now()));
+            if (choice === 'accepted') { localStorage.setItem(SOUND_KEY, soundOn ? 'on' : 'off'); }
+            else { localStorage.removeItem(SOUND_KEY); }
+          } catch (e) {}
+        };
+        const reflect = () => {
+          if (acceptBtn) acceptBtn.setAttribute('aria-pressed', consent === 'accepted' ? 'true' : 'false');
+          if (rejectBtn) rejectBtn.setAttribute('aria-pressed', consent === 'rejected' ? 'true' : 'false');
+        };
+        const hideNotice = () => {
+          cookieNotice.classList.remove('is-visible');
+          clearTimeout(hideTimer);
+          hideTimer = setTimeout(() => { cookieNotice.hidden = true; }, 600);
+        };
+        const showNotice = () => {
+          clearTimeout(hideTimer);
+          cookieNotice.hidden = false;
+          reflect();
+          requestAnimationFrame(() => cookieNotice.classList.add('is-visible'));
+        };
+        if (acceptBtn) acceptBtn.addEventListener('click', () => { setConsent('accepted'); reflect(); hideNotice(); });
+        if (rejectBtn) rejectBtn.addEventListener('click', () => { setConsent('rejected'); reflect(); hideNotice(); });
+        if (consent === 'unset') {
+          cookieNotice.hidden = false;
+          setTimeout(() => requestAnimationFrame(() => cookieNotice.classList.add('is-visible')), 900);
+        }
+        const prefsBtn = document.querySelector('#privacy-prefs');
+        if (prefsBtn) prefsBtn.addEventListener('click', (event) => { event.preventDefault(); showNotice(); });
       }
     })();
   </script>

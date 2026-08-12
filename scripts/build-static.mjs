@@ -4,7 +4,7 @@
 //   - the __ORIGIN__ placeholder resolved to the deployed base URL (for og:image)
 //   - a favicon link injected
 //   - all image assets copied alongside index.html
-import { mkdir, readFile, writeFile, copyFile, rm } from "node:fs/promises";
+import { mkdir, readFile, writeFile, copyFile, rm, readdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 const root = new URL("../", import.meta.url);
@@ -42,6 +42,13 @@ const assets = [
 ];
 for (const [from, to] of assets) {
   await copyFile(new URL(from, root), new URL(to, dist));
+}
+
+// Copy self-hosted fonts (public/fonts/*.woff2) into dist/fonts/.
+await mkdir(new URL("fonts/", dist), { recursive: true });
+const fontFiles = await readdir(new URL("public/fonts/", root));
+for (const file of fontFiles) {
+  await copyFile(new URL(`public/fonts/${file}`, root), new URL(`fonts/${file}`, dist));
 }
 
 // Prevent GitHub Pages from running Jekyll on the output.
