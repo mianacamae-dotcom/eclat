@@ -614,18 +614,11 @@
       aspect-ratio: 1.45;
       box-shadow: none;
       width: clamp(18rem, 22vw, 21rem);
-      overflow: visible;
+      overflow: hidden;
     }
     .footer-top { position: absolute; inset: 0; display: block; cursor: pointer; transition: transform .4s ease; -webkit-tap-highlight-color: transparent; }
     .footer-top:hover { transform: translateY(-6px); }
     .footer-top img { display: block; }
-    .footer-top-hint {
-      position: absolute; left: 50%; bottom: -1.05rem; transform: translateX(-50%);
-      font-family: var(--body); font-weight: 500; font-size: .58rem; letter-spacing: .2em;
-      text-transform: uppercase; color: var(--champagne); white-space: nowrap;
-      opacity: 0; transition: opacity .35s ease; pointer-events: none;
-    }
-    .footer-top:hover .footer-top-hint { opacity: .9; }
     @media (prefers-reduced-motion: reduce) { .footer-top { transition: none; } .footer-top:hover { transform: none; } }
     .footer-links { display: flex; font-size: .57rem; gap: 1.5rem; letter-spacing: .13em; text-transform: uppercase; }
     .footer-meta { color: #708078; display: flex; font-size: .53rem; justify-content: space-between; letter-spacing: .1em; margin-top: 4rem; text-transform: uppercase; }
@@ -893,7 +886,7 @@
   </main>
 
   <footer class="footer">
-    <div class="footer-main"><div class="footer-brand"><a class="footer-top" href="#inicio" aria-label="Voltar ao topo" title="Voltar ao topo"><img class="brand-logo-image" src="eclat-logo-champagne-pearl.png" width="1254" height="1254" alt="Éclat — A Arte de celebrar"><span class="footer-top-hint">↑ Voltar ao topo</span></a></div><div class="footer-links"><a href="#sobre">Sobre</a><a href="#servicos">Serviços</a><a href="mailto:ola.eclat@gmail.com">Email</a><a href="https://eclatmoments.pt">eclatmoments.pt</a></div></div>
+    <div class="footer-main"><div class="footer-brand"><a class="footer-top" href="#inicio" aria-label="Voltar ao topo" title="Voltar ao topo"><img class="brand-logo-image" src="eclat-logo-champagne-pearl.png" width="1254" height="1254" alt="Éclat — A Arte de celebrar"></a></div><div class="footer-links"><a href="#sobre">Sobre</a><a href="#servicos">Serviços</a><a href="mailto:ola.eclat@gmail.com">Email</a><a href="https://eclatmoments.pt">eclatmoments.pt</a></div></div>
     <div class="footer-meta"><span>© <span id="year"></span> Éclat. Todos os direitos reservados. · <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a></span><span>Portugal · Corporate experiences worldwide</span></div>
   </footer>
 
