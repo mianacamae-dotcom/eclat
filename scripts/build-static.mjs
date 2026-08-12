@@ -37,6 +37,7 @@ const assets = [
   ["public/og.png", "og.png"],
   ["public/favicon.svg", "favicon.svg"],
   ["public/button.mp3", "button.mp3"],
+  ["public/hover.mp3", "hover.mp3"],
 ];
 for (const [from, to] of assets) {
   await copyFile(new URL(from, root), new URL(to, dist));

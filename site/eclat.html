@@ -1182,6 +1182,38 @@
       }
       document.querySelectorAll('a[href], button')
         .forEach((el) => { if (!el.classList.contains('sound-toggle')) el.addEventListener('click', playClick); });
+
+      /* Hover sound (mouse/desktop only), shares the same mute state */
+      const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      if (canHover) {
+        const hoverPool = [];
+        const HOVER_POOL = 3;
+        let hoverReady = false;
+        let hoverIndex = 0;
+        let lastHover = 0;
+        const buildHoverPool = () => {
+          if (hoverReady) return;
+          for (let i = 0; i < HOVER_POOL; i += 1) {
+            const audio = new Audio('hover.mp3');
+            audio.preload = 'auto';
+            audio.volume = 0.22;
+            hoverPool.push(audio);
+          }
+          hoverReady = true;
+        };
+        const playHover = () => {
+          if (!soundOn) return;
+          const now = Date.now();
+          if (now - lastHover < 90) return; // throttle rapid moves
+          lastHover = now;
+          buildHoverPool();
+          const audio = hoverPool[hoverIndex];
+          hoverIndex = (hoverIndex + 1) % hoverPool.length;
+          try { audio.currentTime = 0; const played = audio.play(); if (played && played.catch) played.catch(() => {}); } catch (e) {}
+        };
+        document.querySelectorAll('a[href], button')
+          .forEach((el) => { if (!el.classList.contains('sound-toggle')) el.addEventListener('mouseenter', playHover); });
+      }
     })();
   </script>
 </body>
