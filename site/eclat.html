@@ -373,8 +373,7 @@
     }
     .is-ready .hero-media::before { animation: hero-scan 1.8s .55s cubic-bezier(.22,1,.36,1) both; }
     .hero-media::after { background: linear-gradient(90deg, rgba(4,17,15,.74), transparent 36%), linear-gradient(0deg, rgba(4,17,15,.38), transparent 28%); content: ""; inset: 0; pointer-events: none; position: absolute; }
-    .hero-caption { bottom: 2.2rem; display: flex; font-size: .53rem; justify-content: space-between; left: 15%; letter-spacing: .16em; position: absolute; right: 5.6rem; text-transform: uppercase; z-index: 2; }
-    .hero-caption span:last-child { white-space: nowrap; text-align: right; }
+    .hero-caption { bottom: 2.2rem; display: flex; font-size: .53rem; justify-content: space-between; left: 15%; letter-spacing: .16em; position: absolute; right: 2.5rem; text-transform: uppercase; z-index: 2; }
     .hero-side { bottom: 3rem; color: var(--stone); font-size: .5rem; left: 1rem; letter-spacing: .16em; position: absolute; text-transform: uppercase; writing-mode: vertical-rl; }
 
     .manifesto {
@@ -1276,29 +1275,32 @@
           .forEach((el) => { if (!el.classList.contains('sound-toggle')) el.addEventListener('mouseenter', playHover); });
       }
 
-      /* Lift the sound toggle above the footer so it never overlaps footer text */
+      /* Keep the sound toggle above bottom-corner text (hero caption, footer) */
       if (soundToggle) {
-        const footerEl = document.querySelector('.footer');
-        if (footerEl) {
-          let ticking = false;
-          const positionToggle = () => {
-            ticking = false;
-            const overlap = window.innerHeight - footerEl.getBoundingClientRect().top;
-            if (overlap > 0) {
-              soundToggle.style.bottom = (overlap + 16) + 'px';
-            } else {
-              soundToggle.style.bottom = '';
+        const avoiders = [document.querySelector('.hero-caption'), document.querySelector('.footer')].filter(Boolean);
+        let ticking = false;
+        const positionToggle = () => {
+          ticking = false;
+          const vh = window.innerHeight;
+          const RESERVE = 88; // approx toggle footprint from the bottom (px)
+          const GAP = 14;
+          let needed = 0;
+          for (const el of avoiders) {
+            const r = el.getBoundingClientRect();
+            if (r.top < vh && r.bottom > vh - RESERVE) {
+              needed = Math.max(needed, (vh - r.top) + GAP);
             }
-          };
-          const requestPosition = () => {
-            if (ticking) return;
-            ticking = true;
-            requestAnimationFrame(positionToggle);
-          };
-          addEventListener('scroll', requestPosition, { passive: true });
-          addEventListener('resize', requestPosition);
-          positionToggle();
-        }
+          }
+          soundToggle.style.bottom = needed > 0 ? needed + 'px' : '';
+        };
+        const requestPosition = () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(positionToggle);
+        };
+        addEventListener('scroll', requestPosition, { passive: true });
+        addEventListener('resize', requestPosition);
+        positionToggle();
       }
 
       /* Discreet cookie / privacy notice with accept + reject */
