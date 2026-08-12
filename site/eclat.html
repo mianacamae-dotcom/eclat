@@ -620,7 +620,7 @@
     .contact h2 { font-family: var(--display); font-size: clamp(3.9rem, min(8.6vw, 11svh), 9rem); font-weight: 600; letter-spacing: -.095em; line-height: .82; margin: 1.5rem 0 clamp(3.5rem, 7svh, 5rem); max-width: 10ch; rotate: var(--kinetic-rotate, 0deg); text-transform: uppercase; translate: var(--kinetic-x, 0px) 0; will-change: translate, rotate; }
     .contact h2 > span { display: block; }
     .contact h2 em { color: var(--champagne-pale); display: block; font-family: var(--accent); font-size: 1.14em; font-weight: 400; letter-spacing: -.035em; line-height: .98; overflow: visible; padding-bottom: .16em; text-transform: none; }
-    .contact-grid { display: grid; gap: clamp(4rem, 10vw, 12rem); grid-template-columns: .65fr 1.35fr; position: relative; }
+    .contact-grid { display: grid; gap: clamp(4rem, 10vw, 12rem); grid-template-columns: minmax(0, 44rem); justify-content: center; position: relative; }
     .contact-note { align-self: end; color: var(--stone); font-size: .84rem; line-height: 1.8; max-width: 23rem; }
     .contact-form { display: grid; gap: 2rem; grid-template-columns: 1fr 1fr; }
     .field { border-bottom: 1px solid var(--line); padding-bottom: .75rem; }
@@ -958,9 +958,7 @@
     </section>
 
     <section class="contact" id="contactos">
-      <div class="contact-lead reveal"><span class="eyebrow">O próximo momento começa aqui</span><h2><span>Conte-nos</span> <em>o inimaginável</em></h2></div>
       <div class="contact-grid">
-        <p class="contact-note reveal">Partilhe a sua ambição, mesmo que ainda não tenha forma. É precisamente aí que começamos.</p>
         <form class="contact-form reveal" id="contact-form">
           <div class="field"><label for="nome">Nome <span class="req" aria-hidden="true">*</span></label><input id="nome" name="nome" autocomplete="name" required></div>
           <div class="field"><label for="empresa">Empresa (opcional)</label><input id="empresa" name="empresa" autocomplete="organization"></div>
