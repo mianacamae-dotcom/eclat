@@ -36,6 +36,8 @@
       --display: "Syne", "Manrope", sans-serif;
       --accent: "Instrument Serif", Georgia, serif;
       --body: "Manrope", Arial, sans-serif;
+      --px: 50vw;
+      --py: 50vh;
     }
     * { box-sizing: border-box; }
     html { background: var(--ink); scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
@@ -50,6 +52,13 @@
       line-height: 1.75;
       -webkit-font-smoothing: antialiased;
     }
+    body::before {
+      content: ""; position: fixed; inset: 0; z-index: 98; pointer-events: none;
+      mix-blend-mode: screen;
+      background: radial-gradient(circle 18rem at var(--px) var(--py), rgba(234,216,173,.09), transparent 72%);
+    }
+    @media (prefers-reduced-motion: reduce) { body::before { display: none; } }
+    @media (hover: none), (pointer: coarse) { body::before { display: none; } }
     a { color: var(--champagne); text-decoration: none; }
     a:hover { color: var(--champagne-pale); }
     .wrap { max-width: 50rem; margin: 0 auto; padding: clamp(1.5rem, 5vw, 3.5rem); }
@@ -340,6 +349,8 @@
         let px = window.innerWidth / 2, py = window.innerHeight / 2, cx = px, cy = py;
         addEventListener('pointermove', (event) => {
           px = event.clientX; py = event.clientY;
+          root.style.setProperty('--px', event.clientX + 'px');
+          root.style.setProperty('--py', event.clientY + 'px');
           document.body.classList.add('pointer-live');
           orbit.classList.toggle('is-active', Boolean(event.target.closest('a, button, input, textarea')));
         }, { passive: true });
