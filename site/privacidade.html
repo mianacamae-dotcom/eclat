@@ -300,7 +300,7 @@
 
       const toggle = document.querySelector('.sound-toggle');
       const clickPool = []; let clickReady = false, clickIndex = 0;
-      const buildClick = () => { if (clickReady) return; for (let i = 0; i < 4; i += 1) { const a = new Audio('button.mp3'); a.preload = 'auto'; a.volume = 0.12; clickPool.push(a); } clickReady = true; };
+      const buildClick = () => { if (clickReady) return; for (let i = 0; i < 4; i += 1) { const a = new Audio('button.mp3'); a.preload = 'auto'; a.volume = 0.07; clickPool.push(a); } clickReady = true; };
       const playClick = () => { if (!soundOn) return; buildClick(); const a = clickPool[clickIndex]; clickIndex = (clickIndex + 1) % clickPool.length; try { a.currentTime = 0; const p = a.play(); if (p && p.catch) p.catch(() => {}); } catch (e) {} };
       const sync = () => { if (!toggle) return; toggle.setAttribute('aria-pressed', soundOn ? 'true' : 'false'); toggle.setAttribute('aria-label', soundOn ? 'Silenciar sons' : 'Ativar sons'); };
       if (toggle) {
@@ -317,7 +317,7 @@
       const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
       if (canHover) {
         const hoverPool = []; let hoverReady = false, hoverIndex = 0, lastHover = 0;
-        const buildHover = () => { if (hoverReady) return; for (let i = 0; i < 3; i += 1) { const a = new Audio('hover.mp3'); a.preload = 'auto'; a.volume = 0.09; hoverPool.push(a); } hoverReady = true; };
+        const buildHover = () => { if (hoverReady) return; for (let i = 0; i < 3; i += 1) { const a = new Audio('hover.mp3'); a.preload = 'auto'; a.volume = 0.05; hoverPool.push(a); } hoverReady = true; };
         const playHover = () => { if (!soundOn) return; const now = Date.now(); if (now - lastHover < 90) return; lastHover = now; buildHover(); const a = hoverPool[hoverIndex]; hoverIndex = (hoverIndex + 1) % hoverPool.length; try { a.currentTime = 0; const p = a.play(); if (p && p.catch) p.catch(() => {}); } catch (e) {} };
         document.querySelectorAll('a[href], button').forEach((el) => { if (!el.classList.contains('sound-toggle')) el.addEventListener('mouseenter', playHover); });
       }
