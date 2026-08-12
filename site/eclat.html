@@ -15,6 +15,7 @@
   <meta name="twitter:description" content="Eventos que transformam ambição em presença.">
   <meta name="twitter:image" content="__ORIGIN__/og.png">
   <title>Éclat — A Arte dos Eventos Corporativos</title>
+  <script>try{if(new URLSearchParams(location.search).has('home'))document.documentElement.classList.add('no-intro');}catch(e){}</script>
   <style>
     /* Self-hosted fonts (latin subset) — no external Google Fonts requests */
     @font-face { font-family: 'Bodoni Moda'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/bodoni-moda-latin-400-normal.woff2') format('woff2'); }
@@ -136,20 +137,21 @@
 
     /* Intro — Traço de Luz: the logo is "written" by a light beam */
     .curtain .brand-logo-image { clip-path: inset(0 0 0 0); }
-    .curtain.intro-run .brand-logo-image { animation: curtainDraw 1.85s cubic-bezier(.66,0,.2,1) both; }
+    .no-intro .curtain { display: none; }
+    .curtain.intro-run .brand-logo-image { animation: curtainDraw 2.7s cubic-bezier(.66,0,.2,1) both; }
     @keyframes curtainDraw { 0% { clip-path: inset(0 100% 0 0); } 100% { clip-path: inset(0 0 0 0); } }
     .curtain-pen { position: absolute; top: 16%; bottom: 16%; width: 2px; left: 8%; opacity: 0; z-index: 3;
       background: linear-gradient(180deg, transparent, var(--champagne-pale), transparent);
       box-shadow: 0 0 16px 2px rgba(234,216,173,.75); }
-    .curtain.intro-run .curtain-pen { animation: curtainPen 1.85s cubic-bezier(.66,0,.2,1) both; }
+    .curtain.intro-run .curtain-pen { animation: curtainPen 2.7s cubic-bezier(.66,0,.2,1) both; }
     @keyframes curtainPen { 0% { left: 8%; opacity: 0; } 12% { opacity: 1; } 86% { left: 92%; opacity: 1; } 100% { left: 92%; opacity: 0; } }
     .curtain-shine { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0; mix-blend-mode: screen;
       background: linear-gradient(105deg, transparent 44%, rgba(255,255,255,.4) 50%, transparent 56%); background-size: 250% 100%; background-position: 200% 0; }
-    .curtain.intro-run .curtain-shine { animation: curtainShine 1.05s 1.5s ease both; }
+    .curtain.intro-run .curtain-shine { animation: curtainShine 1.25s 2.25s ease both; }
     @keyframes curtainShine { 0% { opacity: 0; background-position: 200% 0; } 25% { opacity: 1; } 80% { opacity: 1; background-position: -40% 0; } 100% { opacity: 0; } }
     .curtain-flash { position: absolute; inset: 0; z-index: 5; pointer-events: none; opacity: 0;
       background: radial-gradient(circle at 50% 48%, rgba(255,251,240,.8), rgba(234,216,173,.14) 42%, transparent 70%); }
-    .curtain.intro-run .curtain-flash { animation: curtainFlash .85s 1.9s ease both; }
+    .curtain.intro-run .curtain-flash { animation: curtainFlash .95s 2.75s ease both; }
     @keyframes curtainFlash { 0% { opacity: 0; } 42% { opacity: .72; } 100% { opacity: 0; } }
     .curtain-skip { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 1000; font-family: var(--body); font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(244,239,230,.55); background: rgba(4,17,15,.4); border: 1px solid rgba(234,216,173,.28); border-radius: 999px; padding: .5rem 1.1rem; cursor: pointer; opacity: 0; transition: opacity .5s .5s ease, color .3s ease, border-color .3s ease; -webkit-tap-highlight-color: transparent; }
     .curtain.intro-run .curtain-skip { opacity: 1; }
@@ -1011,11 +1013,13 @@
       document.querySelector('#year').textContent = new Date().getFullYear();
       const curtainEl = document.querySelector('.curtain');
       const finishIntro = () => body.classList.add('is-ready');
-      if (reducedMotion) {
+      const cameFromSite = new URLSearchParams(location.search).has('home');
+      if (reducedMotion || cameFromSite) {
+        body.classList.add('no-intro');
         requestAnimationFrame(finishIntro);
       } else {
         if (curtainEl) curtainEl.classList.add('intro-run');
-        const introTimer = setTimeout(finishIntro, 2600);
+        const introTimer = setTimeout(finishIntro, 3550);
         const skipBtn = document.querySelector('.curtain-skip');
         if (skipBtn) skipBtn.addEventListener('click', () => { clearTimeout(introTimer); finishIntro(); });
       }
@@ -1281,7 +1285,7 @@
         for (let i = 0; i < POOL_SIZE; i += 1) {
           const audio = new Audio('button.mp3');
           audio.preload = 'auto';
-          audio.volume = 0.18;
+          audio.volume = 0.12;
           clickPool.push(audio);
         }
         poolReady = true;
