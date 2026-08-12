@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Éclat — Aberturas (opções)</title>
+<style>
+  @font-face { font-family:'Syne'; font-weight:800; font-display:swap; src:url('__SYNE8__') format('woff2'); }
+  @font-face { font-family:'Syne'; font-weight:700; font-display:swap; src:url('__SYNE7__') format('woff2'); }
+  @font-face { font-family:'Instrument Serif'; font-style:italic; font-weight:400; font-display:swap; src:url('__INSTR__') format('woff2'); }
+  :root{ --ink:#04110f; --emerald:#0f352b; --champagne:#d2b574; --champagne-pale:#ead8ad; --ivory:#f4efe6; }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--ink);color:var(--ivory);font-family:'Manrope',system-ui,Arial,sans-serif;overflow:hidden}
+  .controls{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;align-items:center;padding:.7rem;background:linear-gradient(180deg,rgba(4,17,15,.85),rgba(4,17,15,0));backdrop-filter:blur(4px)}
+  .controls button{font:inherit;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ivory);background:rgba(255,255,255,.04);border:1px solid rgba(234,216,173,.28);border-radius:999px;padding:.5rem 1rem;cursor:pointer;transition:.25s}
+  .controls button:hover{border-color:var(--champagne);color:var(--champagne-pale)}
+  .controls button.active{background:var(--champagne);color:#12140f;border-color:var(--champagne)}
+  .controls .replay{color:var(--champagne)}
+  .stage{position:fixed;inset:0;overflow:hidden}
+
+  /* Mock site revealed at the end of each intro */
+  .mock{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:8vw;opacity:0;transform:scale(1.04);transition:opacity 1s ease,transform 1.2s cubic-bezier(.22,1,.36,1);
+    background:radial-gradient(120% 90% at 80% 20%, rgba(15,53,43,.6), transparent 60%), var(--ink)}
+  .mock.show{opacity:1;transform:scale(1)}
+  .mock .over{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--champagne);opacity:.8;margin-bottom:1.4rem}
+  .mock h1{font-family:'Syne';font-weight:800;letter-spacing:-.04em;line-height:.9;margin:0;font-size:clamp(2.6rem,9vw,7rem);text-transform:uppercase}
+  .mock h1 em{display:block;font-family:'Instrument Serif';font-style:italic;font-weight:400;text-transform:none;color:var(--champagne-pale);letter-spacing:0}
+
+  /* Intro overlay (each concept builds inside) */
+  .intro{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;background:var(--ink)}
+  .intro.gone{pointer-events:none}
+  .logo{width:min(42vw,360px);filter:drop-shadow(0 0 30px rgba(210,181,116,.25))}
+
+  /* ---------- Concept 1: Ignição ---------- */
+  .ign-core{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--champagne-pale);
+    box-shadow:0 0 0 rgba(210,181,116,.9);opacity:0}
+  .c1 .ign-core{animation:ignCore 2.6s cubic-bezier(.22,1,.36,1) forwards}
+  @keyframes ignCore{0%{opacity:0;transform:scale(.2)}12%{opacity:1;transform:scale(1);box-shadow:0 0 60px 10px rgba(210,181,116,.8)}55%{opacity:1;box-shadow:0 0 160px 40px rgba(210,181,116,.55)}100%{opacity:0;transform:scale(2.6);box-shadow:0 0 260px 120px rgba(210,181,116,0)}}
+  .ign-ray{position:absolute;width:3px;height:34vh;background:linear-gradient(180deg,rgba(234,216,173,0),var(--champagne) 40%,rgba(234,216,173,0));transform-origin:50% 100%;transform:rotate(var(--a)) scaleY(0);opacity:0;bottom:50%;left:calc(50% - 1.5px)}
+  .c1 .ign-ray{animation:ignRay 2.6s cubic-bezier(.22,1,.36,1) forwards;animation-delay:var(--d)}
+  @keyframes ignRay{0%{opacity:0;transform:rotate(var(--a)) scaleY(0)}22%{opacity:.9}45%{opacity:1;transform:rotate(var(--a)) scaleY(1)}75%{opacity:.5}100%{opacity:0;transform:rotate(var(--a)) scaleY(1.25)}}
+  .c1 .logo{opacity:0;animation:ignLogo 2.6s cubic-bezier(.22,1,.36,1) forwards;animation-delay:.9s}
+  @keyframes ignLogo{0%{opacity:0;transform:scale(.6);filter:blur(14px)}40%{opacity:1;transform:scale(1);filter:blur(0)}80%{opacity:1;transform:scale(1)}100%{opacity:1;transform:scale(1.03)}}
+
+  /* ---------- Concept 2: Cortina de Palco ---------- */
+  .curt{position:absolute;top:0;bottom:0;width:52%;background:
+    repeating-linear-gradient(90deg, rgba(4,17,15,1) 0 6%, rgba(9,32,27,1) 6% 12%);
+    box-shadow:inset 0 0 120px rgba(0,0,0,.6);z-index:6}
+  .curt.l{left:0;transform-origin:left}
+  .curt.r{right:0;transform-origin:right}
+  .c2 .curt.l{animation:curtL 3.4s cubic-bezier(.7,0,.2,1) forwards}
+  .c2 .curt.r{animation:curtR 3.4s cubic-bezier(.7,0,.2,1) forwards}
+  @keyframes curtL{0%,55%{transform:translateX(0)}100%{transform:translateX(-102%)}}
+  @keyframes curtR{0%,55%{transform:translateX(0)}100%{transform:translateX(102%)}}
+  .spot{position:absolute;inset:0;z-index:7;pointer-events:none;opacity:0;background:radial-gradient(circle at var(--sx,50%) 42%, rgba(234,216,173,.28), rgba(234,216,173,.06) 18%, transparent 34%)}
+  .c2 .spot{animation:spot 3.4s ease forwards}
+  @keyframes spot{0%{opacity:0;--sx:12%}10%{opacity:1}45%{opacity:1;--sx:50%}60%{opacity:.5}70%,100%{opacity:0}}
+  .c2 .logo{opacity:0;z-index:6;animation:c2logo 3.4s ease forwards}
+  @keyframes c2logo{0%,12%{opacity:0;transform:scale(.96)}30%{opacity:1;transform:scale(1)}52%{opacity:1}62%{opacity:.85}100%{opacity:0;transform:scale(1.05)}}
+
+  /* ---------- Concept 4: Traço de Luz ---------- */
+  .c4wrap{position:relative;display:flex;align-items:center;justify-content:center}
+  .c4 .logo{clip-path:inset(0 100% 0 0);opacity:.96}
+  .c4 .logo{animation:c4draw 3.2s cubic-bezier(.65,0,.2,1) forwards}
+  @keyframes c4draw{0%{clip-path:inset(0 100% 0 0)}55%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 0 0)}}
+  .c4-pen{position:absolute;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent,var(--champagne-pale),transparent);
+    box-shadow:0 0 24px 6px rgba(234,216,173,.8);left:0;opacity:0}
+  .c4 .c4-pen{animation:c4pen 3.2s cubic-bezier(.65,0,.2,1) forwards}
+  @keyframes c4pen{0%{left:8%;opacity:0}8%{opacity:1}52%{left:92%;opacity:1}60%{opacity:0}100%{opacity:0;left:92%}}
+  .c4-shine{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.5) 50%,transparent 60%);
+    background-size:250% 100%;background-position:200% 0;mix-blend-mode:screen;opacity:0}
+  .c4 .c4-shine{animation:c4shine 3.2s ease forwards}
+  @keyframes c4shine{0%,58%{opacity:0;background-position:200% 0}66%{opacity:1}82%{opacity:1;background-position:-60% 0}100%{opacity:0}}
+
+  .flash{position:absolute;inset:0;z-index:30;background:radial-gradient(circle at 50% 50%, rgba(255,251,240,.9), rgba(234,216,173,.2) 40%, transparent 70%);opacity:0;pointer-events:none}
+  .flash.go{animation:flash .9s ease forwards}
+  @keyframes flash{0%{opacity:0}30%{opacity:.85}100%{opacity:0}}
+
+  .hint{position:fixed;bottom:1rem;left:0;right:0;text-align:center;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,239,230,.4);z-index:100}
+  canvas.field{position:absolute;inset:0;z-index:20}
+</style>
+</head>
+<body>
+  <div class="controls">
+    <button data-c="1">1 · Ignição</button>
+    <button data-c="2">2 · Cortina de Palco</button>
+    <button data-c="3">3 · Partículas</button>
+    <button data-c="4">4 · Traço de Luz</button>
+    <button class="replay">↻ Repetir</button>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="mock" id="mock">
+      <div class="over">Corporate experiences · Portugal &amp; beyond</div>
+      <h1>O Extraordinário,<em>em cena</em></h1>
+    </div>
+    <div class="intro" id="intro"></div>
+    <div class="flash" id="flash"></div>
+  </div>
+  <div class="hint">Escolhe uma opção em cima · “Repetir” para rever</div>
+
+<script>
+const LOGO='__LOGO__';
+const intro=document.getElementById('intro');
+const mock=document.getElementById('mock');
+const flash=document.getElementById('flash');
+const buttons=[...document.querySelectorAll('.controls [data-c]')];
+let current='1', rafId=null;
+
+function revealSite(delay){ setTimeout(()=>{ intro.classList.add('gone'); intro.style.transition='opacity .9s ease, transform 1.1s ease'; intro.style.opacity='0'; intro.style.transform='scale(1.06)'; mock.classList.add('show'); }, delay); }
+function doFlash(delay){ setTimeout(()=>{ flash.classList.remove('go'); void flash.offsetWidth; flash.classList.add('go'); }, delay); }
+function stop(){ if(rafId){cancelAnimationFrame(rafId); rafId=null;} }
+
+function reset(){
+  stop();
+  intro.className='intro'; intro.style=''; intro.innerHTML='';
+  mock.classList.remove('show');
+  flash.classList.remove('go');
+}
+
+function play(c){
+  current=c; reset();
+  buttons.forEach(b=>b.classList.toggle('active', b.dataset.c===c));
+  if(c==='1') playIgnition();
+  else if(c==='2') playCurtain();
+  else if(c==='3') playParticles();
+  else if(c==='4') playStroke();
+}
+
+/* Concept 1 */
+function playIgnition(){
+  intro.classList.add('c1');
+  const core=document.createElement('div'); core.className='ign-core'; intro.appendChild(core);
+  const N=18;
+  for(let i=0;i<N;i++){ const r=document.createElement('div'); r.className='ign-ray';
+    r.style.setProperty('--a', (i*(360/N))+'deg');
+    r.style.setProperty('--d', (0.15 + (i%3)*0.05 + i*0.012)+'s');
+    intro.appendChild(r);
+  }
+  const img=document.createElement('img'); img.className='logo'; img.src=LOGO; intro.appendChild(img);
+  doFlash(950);
+  revealSite(2500);
+}
+
+/* Concept 2 */
+function playCurtain(){
+  intro.classList.add('c2');
+  const img=document.createElement('img'); img.className='logo'; img.src=LOGO; intro.appendChild(img);
+  const spot=document.createElement('div'); spot.className='spot'; intro.appendChild(spot);
+  const l=document.createElement('div'); l.className='curt l'; intro.appendChild(l);
+  const r=document.createElement('div'); r.className='curt r'; intro.appendChild(r);
+  revealSite(2000);
+}
+
+/* Concept 4 */
+function playStroke(){
+  intro.classList.add('c4');
+  const wrap=document.createElement('div'); wrap.className='c4wrap';
+  const img=document.createElement('img'); img.className='logo'; img.src=LOGO; wrap.appendChild(img);
+  const pen=document.createElement('div'); pen.className='c4-pen'; wrap.appendChild(pen);
+  const shine=document.createElement('div'); shine.className='c4-shine'; wrap.appendChild(shine);
+  intro.appendChild(wrap);
+  doFlash(2050);
+  revealSite(2650);
+}
+
+/* Concept 3 — particles converge into the logo shape */
+function playParticles(){
+  const canvas=document.createElement('canvas'); canvas.className='field'; intro.appendChild(canvas);
+  const ctx=canvas.getContext('2d');
+  const DPR=Math.min(2, window.devicePixelRatio||1);
+  let W,H; function size(){ W=canvas.width=innerWidth*DPR; H=canvas.height=innerHeight*DPR; canvas.style.width=innerWidth+'px'; canvas.style.height=innerHeight+'px'; }
+  size();
+  const img=new Image();
+  img.onload=()=>{
+    // sample target points from the logo
+    const off=document.createElement('canvas'); const scale=Math.min(360, innerWidth*0.42);
+    const iw=scale, ih=scale*(img.height/img.width);
+    off.width=iw; off.height=ih; const octx=off.getContext('2d'); octx.drawImage(img,0,0,iw,ih);
+    const data=octx.getImageData(0,0,iw,ih).data;
+    const targets=[];
+    const step=3;
+    const ox=(innerWidth-iw)/2, oy=(innerHeight-ih)/2;
+    for(let y=0;y<ih;y+=step){ for(let x=0;x<iw;x+=step){ const idx=(y*iw+x)*4; const a=data[idx+3]; const lum=(data[idx]+data[idx+1]+data[idx+2])/3;
+      if(a>90 && lum>60){ targets.push({x:(ox+x)*DPR, y:(oy+y)*DPR}); } } }
+    // build particles
+    const P=Math.min(targets.length, 1400);
+    const parts=[];
+    for(let i=0;i<P;i++){ const t=targets[(Math.random()*targets.length)|0];
+      parts.push({ x:Math.random()*W, y:Math.random()*H, tx:t.x, ty:t.y, vx:0, vy:0, s:(Math.random()*1.4+0.5)*DPR, hold:0 }); }
+    const start=performance.now();
+    function frame(now){
+      const el=(now-start)/1000;
+      ctx.clearRect(0,0,W,H);
+      // phase timing
+      const converge = el<2.2;
+      const disperse = el>3.0;
+      for(const p of parts){
+        let ax, ay;
+        if(disperse){ ax=(p.x-W/2)*0.004; ay=(p.y-H/2)*0.004; p.vx+=ax; p.vy+=ay; }
+        else { const k=0.06; p.vx += (p.tx-p.x)*k; p.vy += (p.ty-p.y)*k; }
+        p.vx*=0.82; p.vy*=0.82; p.x+=p.vx; p.y+=p.vy;
+        const near=Math.abs(p.tx-p.x)+Math.abs(p.ty-p.y);
+        const a= disperse? Math.max(0, 1-(el-3.0)) : Math.min(1, 1-near/(220*DPR)+0.15);
+        ctx.beginPath(); ctx.fillStyle='rgba('+(232)+','+(214)+','+(160)+','+Math.max(0,Math.min(0.95,a))+')';
+        ctx.arc(p.x,p.y,p.s,0,6.283); ctx.fill();
+      }
+      if(el<4.0) rafId=requestAnimationFrame(frame);
+    }
+    doFlash(2150);
+    revealSite(3050);
+    rafId=requestAnimationFrame(frame);
+  };
+  img.src=LOGO;
+}
+
+buttons.forEach(b=> b.addEventListener('click',()=>play(b.dataset.c)));
+document.querySelector('.replay').addEventListener('click',()=>play(current));
+// autostart with concept 1
+play('1');
+</script>
+</body>
+</html>
