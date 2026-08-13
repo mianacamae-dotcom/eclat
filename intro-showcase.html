@@ -67,10 +67,6 @@
     box-shadow:0 0 24px 6px rgba(234,216,173,.8);left:0;opacity:0}
   .c4 .c4-pen{animation:c4pen 3.2s cubic-bezier(.65,0,.2,1) forwards}
   @keyframes c4pen{0%{left:8%;opacity:0}8%{opacity:1}52%{left:92%;opacity:1}60%{opacity:0}100%{opacity:0;left:92%}}
-  .c4-shine{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.5) 50%,transparent 60%);
-    background-size:250% 100%;background-position:200% 0;mix-blend-mode:screen;opacity:0}
-  .c4 .c4-shine{animation:c4shine 3.2s ease forwards}
-  @keyframes c4shine{0%,58%{opacity:0;background-position:200% 0}66%{opacity:1}82%{opacity:1;background-position:-60% 0}100%{opacity:0}}
 
   .flash{position:absolute;inset:0;z-index:30;background:radial-gradient(circle at 50% 50%, rgba(255,251,240,.9), rgba(234,216,173,.2) 40%, transparent 70%);opacity:0;pointer-events:none}
   .flash.go{animation:flash .9s ease forwards}
@@ -158,7 +154,6 @@ function playStroke(){
   const wrap=document.createElement('div'); wrap.className='c4wrap';
   const img=document.createElement('img'); img.className='logo'; img.src=LOGO; wrap.appendChild(img);
   const pen=document.createElement('div'); pen.className='c4-pen'; wrap.appendChild(pen);
-  const shine=document.createElement('div'); shine.className='c4-shine'; wrap.appendChild(shine);
   intro.appendChild(wrap);
   doFlash(2050);
   revealSite(2650);
